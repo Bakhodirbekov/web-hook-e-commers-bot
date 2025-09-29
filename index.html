@@ -16,10 +16,13 @@
                         'pastel-blue': '#E1F5FE',
                         'pastel-pink': '#FCE4EC',
                         'pastel-beige': '#F5F5DC',
+                        'pastel-green': '#E8F5E8',
                         'soft-blue': '#B3E5FC',
                         'soft-pink': '#F8BBD0',
-                        'accent': '#FF80AB',
-                        'primary': '#4A90E2'
+                        'soft-green': '#A5D6A7',
+                        'accent': '#4CAF50',
+                        'primary': '#4CAF50',
+                        'green-dark': '#388E3C'
                     },
                     fontFamily: {
                         'sans': ['Inter', 'ui-sans-serif', 'system-ui']
@@ -29,6 +32,21 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .image-thumbnail {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .image-thumbnail:hover {
+            transform: scale(1.05);
+        }
+        .image-thumbnail.active {
+            border: 2px solid #4CAF50;
+        }
+        .product-image {
+            transition: opacity 0.3s ease;
+        }
+    </style>
 </head>
 <body class="font-sans bg-white text-gray-800 min-h-screen flex flex-col">
     <!-- App Container -->
@@ -37,22 +55,25 @@
         <header class="sticky top-0 z-40 bg-white shadow-sm">
             <div class="px-4 py-3">
                 <div class="flex items-center justify-between">
-                    <h1 class="text-xl font-bold text-soft-pink">Little Treasures</h1>
+                    <h1 class="text-xl font-bold text-primary">Little Treasures</h1>
                     <div class="flex items-center space-x-3">
-                        <button class="p-2 text-gray-600">
+                        <button class="p-2 text-gray-600" onclick="toggleSearch()">
                             <i class="fas fa-search"></i>
                         </button>
-                        <button class="p-2 text-gray-600 relative">
+                        <button class="p-2 text-gray-600 relative" onclick="showPage('cart-page')">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                            <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" id="cart-count">3</span>
+                        </button>
+                        <button class="p-2 text-gray-600" onclick="toggleAuth()" id="auth-button">
+                            <i class="fas fa-user"></i>
                         </button>
                     </div>
                 </div>
                 
                 <!-- Search Bar -->
-                <div class="mt-3 relative">
-                    <input type="text" placeholder="Search products..." class="w-full px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-soft-blue text-sm">
-                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-soft-blue text-white p-1 rounded-full w-6 h-6 flex items-center justify-center">
+                <div class="mt-3 relative hidden" id="search-container">
+                    <input type="text" placeholder="Search products..." class="w-full px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-soft-green text-sm" id="search-input">
+                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-soft-green text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="performSearch()">
                         <i class="fas fa-search text-xs"></i>
                     </button>
                 </div>
@@ -64,12 +85,12 @@
             <!-- Home Page Content -->
             <div id="home-page">
                 <!-- Hero Banner -->
-                <div class="bg-gradient-to-r from-pastel-blue to-pastel-pink rounded-xl p-4 mb-6">
+                <div class="bg-gradient-to-r from-pastel-green to-pastel-blue rounded-xl p-4 mb-6">
                     <div class="grid grid-cols-2 gap-4 items-center">
                         <div>
                             <h2 class="text-lg font-bold mb-2">Style for Your Little Ones</h2>
                             <p class="text-sm text-gray-600 mb-3">Discover premium baby clothes & accessories</p>
-                            <button class="bg-soft-blue text-white px-4 py-2 rounded-full text-sm font-medium">Shop Now</button>
+                            <button class="bg-soft-green text-white px-4 py-2 rounded-full text-sm font-medium" onclick="showCategory('sale')">Shop Now</button>
                         </div>
                         <div>
                             <img 
@@ -87,31 +108,31 @@
                 <div class="grid grid-cols-3 gap-3 mb-6">
                     <div class="bg-pastel-beige rounded-lg p-3 text-center" onclick="showCategory('kids')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-child text-xl text-soft-blue"></i>
+                            <i class="fas fa-child text-xl text-primary"></i>
                         </div>
                         <span class="text-sm font-medium">Kids</span>
                     </div>
                     <div class="bg-pastel-pink rounded-lg p-3 text-center" onclick="showCategory('baby')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-baby text-xl text-soft-pink"></i>
+                            <i class="fas fa-baby text-xl text-primary"></i>
                         </div>
                         <span class="text-sm font-medium">Baby</span>
                     </div>
                     <div class="bg-pastel-blue rounded-lg p-3 text-center" onclick="showCategory('women')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-female text-xl text-soft-blue"></i>
+                            <i class="fas fa-female text-xl text-primary"></i>
                         </div>
                         <span class="text-sm font-medium">Women</span>
                     </div>
                     <div class="bg-pastel-beige rounded-lg p-3 text-center" onclick="showCategory('men')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-male text-xl text-soft-pink"></i>
+                            <i class="fas fa-male text-xl text-primary"></i>
                         </div>
                         <span class="text-sm font-medium">Men</span>
                     </div>
                     <div class="bg-pastel-pink rounded-lg p-3 text-center" onclick="showCategory('accessories')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-mitten text-xl text-soft-blue"></i>
+                            <i class="fas fa-mitten text-xl text-primary"></i>
                         </div>
                         <span class="text-sm font-medium">Accessories</span>
                     </div>
@@ -121,16 +142,52 @@
                         </div>
                         <span class="text-sm font-medium text-red-500">Sale</span>
                     </div>
+                    <div class="bg-pastel-beige rounded-lg p-3 text-center" onclick="showCategory('electronics')">
+                        <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-mobile-alt text-xl text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium">Electronics</span>
+                    </div>
+                    <div class="bg-pastel-pink rounded-lg p-3 text-center" onclick="showCategory('home')">
+                        <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-home text-xl text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium">Home</span>
+                    </div>
+                    <div class="bg-pastel-blue rounded-lg p-3 text-center" onclick="showCategory('beauty')">
+                        <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-spa text-xl text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium">Beauty</span>
+                    </div>
+                    <div class="bg-pastel-green rounded-lg p-3 text-center" onclick="showCategory('auto')">
+                        <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-car text-xl text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium">Auto Parts</span>
+                    </div>
+                    <div class="bg-pastel-beige rounded-lg p-3 text-center" onclick="showCategory('sports')">
+                        <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-running text-xl text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium">Sports</span>
+                    </div>
+                    <div class="bg-pastel-pink rounded-lg p-3 text-center" onclick="showMap()">
+                        <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-map-marker-alt text-xl text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium">Find Stores</span>
+                    </div>
                 </div>
 
                 <!-- Featured Products -->
                 <h3 class="font-semibold mb-4">Featured Products</h3>
-                <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="grid grid-cols-2 gap-3 mb-6" id="featured-products">
                     <div class="bg-white rounded-lg shadow-sm p-3" onclick="showProduct(1)">
                         <img src="https://picsum.photos/150/150?random=2" alt="Organic Baby Bodysuit" class="w-full h-32 object-cover rounded mb-2">
                         <h4 class="font-medium text-sm mb-1">Organic Bodysuit</h4>
                         <div class="flex justify-between items-center">
-                            <span class="text-red-500 font-bold">$24.99</span>
+                            <span class="text-green-dark font-bold">$24.99</span>
                             <span class="text-gray-400 text-xs line-through">$31.99</span>
                         </div>
                     </div>
@@ -149,10 +206,11 @@
             <div id="product-list-page" class="hidden">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="font-bold text-lg" id="category-title">Kids Clothing</h2>
-                    <select class="border rounded-lg px-2 py-1 text-sm">
-                        <option>Sort by</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
+                    <select class="border rounded-lg px-2 py-1 text-sm" id="sort-select" onchange="sortProducts()">
+                        <option value="default">Sort by</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name">Name</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-3" id="product-grid">
@@ -163,50 +221,57 @@
             <!-- Product Detail Page -->
             <div id="product-detail-page" class="hidden">
                 <div class="mb-4">
-                    <div class="relative">
-                        <img src="https://picsum.photos/300/300?random=4" alt="Product image" class="w-full rounded-lg mb-3" id="product-image">
+                    <!-- Main Product Image -->
+                    <div class="relative mb-3">
+                        <img src="https://picsum.photos/300/300?random=4" alt="Product image" class="w-full rounded-lg product-image" id="product-main-image">
                         <div class="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow">
-                            <i class="fas fa-heart text-gray-400"></i>
+                            <i class="fas fa-heart text-gray-400" id="wishlist-icon" onclick="toggleWishlist()"></i>
                         </div>
                     </div>
+                    
+                    <!-- Product Image Thumbnails -->
+                    <div class="flex gap-2 mb-4" id="product-thumbnails">
+                        <!-- Thumbnails will be loaded here -->
+                    </div>
+                    
                     <h2 class="font-bold text-xl mb-2" id="product-title">Organic Cotton Bodysuit</h2>
                     <div class="flex items-center mb-3">
-                        <span class="text-red-500 font-bold text-lg" id="product-price">$24.99</span>
+                        <span class="text-green-dark font-bold text-lg" id="product-price">$24.99</span>
                         <span class="text-gray-400 text-sm line-through ml-2" id="product-old-price">$31.99</span>
-                        <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded ml-auto" id="product-discount">-20%</span>
+                        <span class="bg-green-100 text-green-dark text-xs px-2 py-1 rounded ml-auto" id="product-discount">-20%</span>
                     </div>
                     <p class="text-gray-600 text-sm mb-4" id="product-description">Soft organic cotton bodysuit with snap closures. Perfect for everyday wear. Hypoallergenic and gentle on baby's skin.</p>
                     
                     <div class="mb-4">
                         <h3 class="font-semibold mb-2">Size</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="border rounded-lg px-3 py-1 text-sm">0-3M</button>
-                            <button class="border rounded-lg px-3 py-1 text-sm bg-soft-blue text-white">3-6M</button>
-                            <button class="border rounded-lg px-3 py-1 text-sm">6-9M</button>
-                            <button class="border rounded-lg px-3 py-1 text-sm">9-12M</button>
+                        <div class="flex flex-wrap gap-2" id="size-selector">
+                            <button class="border rounded-lg px-3 py-1 text-sm" data-size="0-3M">0-3M</button>
+                            <button class="border rounded-lg px-3 py-1 text-sm bg-soft-green text-white" data-size="3-6M">3-6M</button>
+                            <button class="border rounded-lg px-3 py-1 text-sm" data-size="6-9M">6-9M</button>
+                            <button class="border rounded-lg px-3 py-1 text-sm" data-size="9-12M">9-12M</button>
                         </div>
                     </div>
                     
                     <div class="mb-4">
                         <h3 class="font-semibold mb-2">Color</h3>
-                        <div class="flex gap-2">
-                            <button class="w-8 h-8 rounded-full bg-pastel-blue border-2 border-white shadow"></button>
-                            <button class="w-8 h-8 rounded-full bg-pastel-pink border-2 border-soft-blue"></button>
-                            <button class="w-8 h-8 rounded-full bg-pastel-beige border-2 border-white shadow"></button>
+                        <div class="flex gap-2" id="color-selector">
+                            <button class="w-8 h-8 rounded-full bg-pastel-blue border-2 border-white shadow" data-color="blue"></button>
+                            <button class="w-8 h-8 rounded-full bg-pastel-pink border-2 border-soft-green" data-color="pink"></button>
+                            <button class="w-8 h-8 rounded-full bg-pastel-beige border-2 border-white shadow" data-color="beige"></button>
                         </div>
                     </div>
                     
                     <div class="mb-4">
                         <h3 class="font-semibold mb-2">Quantity</h3>
                         <div class="flex items-center border rounded-lg w-24">
-                            <button class="px-2 py-1 text-gray-600">-</button>
-                            <span class="flex-1 text-center">1</span>
-                            <button class="px-2 py-1 text-gray-600">+</button>
+                            <button class="px-2 py-1 text-gray-600" onclick="decreaseQuantity()">-</button>
+                            <span class="flex-1 text-center" id="quantity">1</span>
+                            <button class="px-2 py-1 text-gray-600" onclick="increaseQuantity()">+</button>
                         </div>
                     </div>
                     
                     <div class="flex gap-2">
-                        <button class="flex-1 bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="addToCart()">Add to Cart</button>
+                        <button class="flex-1 bg-soft-green text-white py-3 rounded-lg font-medium" onclick="addToCart()">Add to Cart</button>
                         <button class="flex-1 bg-green-500 text-white py-3 rounded-lg font-medium" onclick="orderViaTelegram()">
                             <i class="fab fa-telegram mr-1"></i> Order via Telegram
                         </button>
@@ -218,63 +283,50 @@
             <div id="cart-page" class="hidden">
                 <h2 class="font-bold text-lg mb-4">Your Cart</h2>
                 <div class="space-y-3 mb-6" id="cart-items">
-                    <div class="flex items-center bg-white rounded-lg p-3 shadow-sm">
-                        <img src="https://picsum.photos/80/80?random=5" alt="Product" class="w-16 h-16 rounded">
-                        <div class="ml-3 flex-1">
-                            <h3 class="font-medium text-sm">Organic Bodysuit</h3>
-                            <p class="text-gray-600 text-xs">Size: 3-6M | Color: Blue</p>
-                            <div class="flex justify-between items-center mt-1">
-                                <span class="text-red-500 font-bold">$24.99</span>
-                                <div class="flex items-center border rounded">
-                                    <button class="px-2 text-gray-600">-</button>
-                                    <span class="px-2">1</span>
-                                    <button class="px-2 text-gray-600">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="text-gray-400">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+                    <!-- Cart items will be loaded here -->
                 </div>
                 
                 <div class="bg-gray-50 rounded-lg p-4 mb-4">
                     <div class="flex justify-between mb-2">
                         <span>Subtotal</span>
-                        <span>$24.99</span>
+                        <span id="cart-subtotal">$0.00</span>
                     </div>
                     <div class="flex justify-between mb-2">
                         <span>Shipping</span>
-                        <span>$4.99</span>
+                        <span id="cart-shipping">$4.99</span>
                     </div>
                     <div class="flex justify-between font-bold text-lg border-t pt-2">
                         <span>Total</span>
-                        <span>$29.98</span>
+                        <span id="cart-total">$0.00</span>
                     </div>
                 </div>
                 
-                <button class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="showCheckout()">Proceed to Checkout</button>
+                <button class="w-full bg-soft-green text-white py-3 rounded-lg font-medium" onclick="showCheckout()">Proceed to Checkout</button>
             </div>
 
             <!-- Checkout Page -->
             <div id="checkout-page" class="hidden">
                 <h2 class="font-bold text-lg mb-4">Checkout</h2>
-                <form class="space-y-4">
+                <form class="space-y-4" id="checkout-form">
                     <div>
                         <label class="block text-sm font-medium mb-1">Full Name</label>
-                        <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="John Doe" required>
+                        <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="John Doe" required id="checkout-name">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Phone Number</label>
-                        <input type="tel" class="w-full border rounded-lg px-3 py-2" placeholder="+1 234 567 8900" required>
+                        <input type="tel" class="w-full border rounded-lg px-3 py-2" placeholder="+1 234 567 8900" required id="checkout-phone">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Email</label>
+                        <input type="email" class="w-full border rounded-lg px-3 py-2" placeholder="your@email.com" required id="checkout-email">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Delivery Address</label>
-                        <textarea class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Street, City, ZIP Code" required></textarea>
+                        <textarea class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Street, City, ZIP Code" required id="checkout-address"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Payment Method</label>
-                        <select class="w-full border rounded-lg px-3 py-2">
+                        <select class="w-full border rounded-lg px-3 py-2" id="checkout-payment">
                             <option>Cash on Delivery</option>
                             <option>Credit Card</option>
                             <option>PayPal</option>
@@ -284,95 +336,151 @@
                     <div class="bg-gray-50 rounded-lg p-4 mb-4">
                         <div class="font-bold mb-2">Order Summary</div>
                         <div class="flex justify-between text-sm mb-1">
-                            <span>Items (1)</span>
-                            <span>$24.99</span>
+                            <span>Items (<span id="checkout-item-count">0</span>)</span>
+                            <span id="checkout-subtotal">$0.00</span>
                         </div>
                         <div class="flex justify-between text-sm mb-1">
                             <span>Shipping</span>
-                            <span>$4.99</span>
+                            <span id="checkout-shipping">$4.99</span>
                         </div>
                         <div class="flex justify-between font-bold border-t pt-2">
                             <span>Total</span>
-                            <span>$29.98</span>
+                            <span id="checkout-total">$0.00</span>
                         </div>
                     </div>
                     
-                    <button type="button" class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="placeOrder()">Place Order</button>
+                    <button type="button" class="w-full bg-soft-green text-white py-3 rounded-lg font-medium" onclick="placeOrder()">Place Order</button>
                 </form>
+            </div>
+
+            <!-- Map Page -->
+            <div id="map-page" class="hidden">
+                <h2 class="font-bold text-lg mb-4">Find Our Stores</h2>
+                <div class="bg-gray-100 rounded-lg h-64 mb-4 flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-map-marked-alt text-4xl text-primary mb-2"></i>
+                        <p class="text-gray-600">Interactive map would be displayed here</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <h3 class="font-semibold">Our Store Locations</h3>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="flex items-start">
+                            <div class="bg-pastel-green rounded-full p-2 mr-3">
+                                <i class="fas fa-store text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Downtown Store</h4>
+                                <p class="text-gray-600 text-sm">123 Main Street, New York, NY</p>
+                                <p class="text-gray-600 text-sm">Open: 9:00 AM - 9:00 PM</p>
+                                <button class="text-primary text-sm mt-1 flex items-center" onclick="callStore('+1-555-0123')">
+                                    <i class="fas fa-phone mr-1"></i> Call Store
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="flex items-start">
+                            <div class="bg-pastel-green rounded-full p-2 mr-3">
+                                <i class="fas fa-store text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Mall Location</h4>
+                                <p class="text-gray-600 text-sm">456 Shopping Ave, Los Angeles, CA</p>
+                                <p class="text-gray-600 text-sm">Open: 10:00 AM - 10:00 PM</p>
+                                <button class="text-primary text-sm mt-1 flex items-center" onclick="callStore('+1-555-0124')">
+                                    <i class="fas fa-phone mr-1"></i> Call Store
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="flex items-start">
+                            <div class="bg-pastel-green rounded-full p-2 mr-3">
+                                <i class="fas fa-store text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Suburban Store</h4>
+                                <p class="text-gray-600 text-sm">789 Park Road, Chicago, IL</p>
+                                <p class="text-gray-600 text-sm">Open: 8:00 AM - 8:00 PM</p>
+                                <button class="text-primary text-sm mt-1 flex items-center" onclick="callStore('+1-555-0125')">
+                                    <i class="fas fa-phone mr-1"></i> Call Store
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Login/Register Page -->
             <div id="auth-page" class="hidden">
-                <h2 class="font-bold text-lg text-center mb-6">Welcome Back</h2>
-                <form class="space-y-4">
+                <h2 class="font-bold text-lg text-center mb-6" id="auth-title">Welcome Back</h2>
+                <form class="space-y-4" id="auth-form">
+                    <div id="name-field" class="hidden">
+                        <label class="block text-sm font-medium mb-1">Full Name</label>
+                        <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="John Doe" id="auth-name">
+                    </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Email</label>
-                        <input type="email" class="w-full border rounded-lg px-3 py-2" placeholder="your@email.com" required>
+                        <input type="email" class="w-full border rounded-lg px-3 py-2" placeholder="your@email.com" required id="auth-email">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Password</label>
-                        <input type="password" class="w-full border rounded-lg px-3 py-2" placeholder="••••••••" required>
+                        <input type="password" class="w-full border rounded-lg px-3 py-2" placeholder="••••••••" required id="auth-password">
                     </div>
-                    <button type="button" class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium">Sign In</button>
+                    <button type="button" class="w-full bg-soft-green text-white py-3 rounded-lg font-medium" id="auth-submit" onclick="handleAuth()">Sign In</button>
                 </form>
                 
                 <div class="text-center my-4">
                     <span class="text-gray-500 text-sm">or continue with</span>
                 </div>
                 
-                <button class="w-full border border-gray-300 py-3 rounded-lg font-medium flex items-center justify-center">
+                <button class="w-full border border-gray-300 py-3 rounded-lg font-medium flex items-center justify-center" onclick="signInWithGoogle()">
                     <i class="fab fa-google text-red-500 mr-2"></i>
                     Sign in with Google
                 </button>
                 
                 <div class="text-center mt-4">
-                    <span class="text-sm">Don't have an account? <a href="#" class="text-soft-blue">Sign up</a></span>
+                    <span class="text-sm" id="auth-switch">Don't have an account? <a href="#" class="text-primary" onclick="toggleAuthMode()">Sign up</a></span>
                 </div>
             </div>
 
             <!-- Profile Page -->
             <div id="profile-page" class="hidden">
                 <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-pastel-blue rounded-full flex items-center justify-center mx-auto mb-2">
-                        <i class="fas fa-user text-2xl text-soft-blue"></i>
+                    <div class="w-16 h-16 bg-pastel-green rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-user text-2xl text-primary"></i>
                     </div>
-                    <h2 class="font-bold text-lg">Sarah Johnson</h2>
-                    <p class="text-gray-600 text-sm">sarah@example.com</p>
+                    <h2 class="font-bold text-lg" id="profile-name">Guest User</h2>
+                    <p class="text-gray-600 text-sm" id="profile-email">Please log in to see your profile</p>
                 </div>
                 
-                <div class="space-y-3 mb-6">
+                <div class="space-y-3 mb-6" id="order-history">
                     <h3 class="font-semibold">Order History</h3>
                     <div class="bg-white rounded-lg p-3 shadow-sm">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-medium">Order #12345</span>
-                            <span class="text-green-600 text-sm">Delivered</span>
-                        </div>
-                        <p class="text-gray-600 text-sm">2 items • $58.97 • Dec 15, 2023</p>
-                    </div>
-                    <div class="bg-white rounded-lg p-3 shadow-sm">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-medium">Order #12344</span>
-                            <span class="text-blue-600 text-sm">Shipped</span>
-                        </div>
-                        <p class="text-gray-600 text-sm">1 item • $29.98 • Dec 10, 2023</p>
+                        <p class="text-gray-600 text-sm text-center">Please log in to see your order history</p>
                     </div>
                 </div>
                 
-                <div class="space-y-3 mb-6">
+                <div class="space-y-3 mb-6" id="saved-addresses">
                     <h3 class="font-semibold">Saved Addresses</h3>
                     <div class="bg-white rounded-lg p-3 shadow-sm">
-                        <p class="font-medium">Home Address</p>
-                        <p class="text-gray-600 text-sm">123 Main St, Apt 4B, New York, NY 10001</p>
+                        <p class="text-gray-600 text-sm text-center">Please log in to see your saved addresses</p>
                     </div>
                 </div>
                 
-                <button class="w-full border border-red-300 text-red-600 py-3 rounded-lg font-medium" onclick="logout()">Log Out</button>
+                <button class="w-full border border-red-300 text-red-600 py-3 rounded-lg font-medium hidden" id="logout-button" onclick="logout()">Log Out</button>
+                <button class="w-full bg-soft-green text-white py-3 rounded-lg font-medium" id="login-button" onclick="showPage('auth-page')">Log In</button>
             </div>
         </main>
 
         <!-- Bottom Navigation -->
         <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-            <div class="max-w-md mx-auto grid grid-cols-4 gap-1 px-2 py-2">
+            <div class="max-w-md mx-auto grid grid-cols-5 gap-1 px-2 py-2">
                 <button class="flex flex-col items-center text-primary" onclick="showPage('home-page')">
                     <i class="fas fa-home"></i>
                     <span class="text-xs mt-1">Home</span>
@@ -385,6 +493,10 @@
                     <i class="fas fa-shopping-cart"></i>
                     <span class="text-xs mt-1">Cart</span>
                 </button>
+                <button class="flex flex-col items-center text-gray-600" onclick="showMap()">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="text-xs mt-1">Stores</span>
+                </button>
                 <button class="flex flex-col items-center text-gray-600" onclick="showPage('profile-page')">
                     <i class="fas fa-user"></i>
                     <span class="text-xs mt-1">Profile</span>
@@ -394,33 +506,439 @@
     </div>
 
     <script>
-        // Sample product data
+        // Sample product data with multiple images
         const products = {
             'kids': [
-                { id: 1, name: "Kids T-Shirt", price: 19.99, oldPrice: 24.99, image: "https://picsum.photos/150/150?random=6", discount: "-20%" },
-                { id: 2, name: "Children's Jeans", price: 29.99, image: "https://picsum.photos/150/150?random=7" },
-                { id: 3, name: "Kids Sweater", price: 34.99, oldPrice: 39.99, image: "https://picsum.photos/150/150?random=8", discount: "-13%" },
-                { id: 4, name: "Children's Shoes", price: 49.99, image: "https://picsum.photos/150/150?random=9" }
+                { 
+                    id: 1, 
+                    name: "Kids T-Shirt", 
+                    price: 19.99, 
+                    oldPrice: 24.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=6",
+                        "https://picsum.photos/300/300?random=60",
+                        "https://picsum.photos/300/300?random=61",
+                        "https://picsum.photos/300/300?random=62"
+                    ], 
+                    discount: "-20%" 
+                },
+                { 
+                    id: 2, 
+                    name: "Children's Jeans", 
+                    price: 29.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=7",
+                        "https://picsum.photos/300/300?random=70",
+                        "https://picsum.photos/300/300?random=71",
+                        "https://picsum.photos/300/300?random=72"
+                    ] 
+                },
+                { 
+                    id: 3, 
+                    name: "Kids Sweater", 
+                    price: 34.99, 
+                    oldPrice: 39.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=8",
+                        "https://picsum.photos/300/300?random=80",
+                        "https://picsum.photos/300/300?random=81",
+                        "https://picsum.photos/300/300?random=82"
+                    ], 
+                    discount: "-13%" 
+                },
+                { 
+                    id: 4, 
+                    name: "Children's Shoes", 
+                    price: 49.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=9",
+                        "https://picsum.photos/300/300?random=90",
+                        "https://picsum.photos/300/300?random=91",
+                        "https://picsum.photos/300/300?random=92"
+                    ] 
+                }
             ],
             'baby': [
-                { id: 5, name: "Baby Bodysuit", price: 14.99, oldPrice: 19.99, image: "https://picsum.photos/150/150?random=10", discount: "-25%" },
-                { id: 6, name: "Baby Romper", price: 22.99, image: "https://picsum.photos/150/150?random=11" }
+                { 
+                    id: 5, 
+                    name: "Baby Bodysuit", 
+                    price: 14.99, 
+                    oldPrice: 19.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=10",
+                        "https://picsum.photos/300/300?random=100",
+                        "https://picsum.photos/300/300?random=101",
+                        "https://picsum.photos/300/300?random=102"
+                    ], 
+                    discount: "-25%" 
+                },
+                { 
+                    id: 6, 
+                    name: "Baby Romper", 
+                    price: 22.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=11",
+                        "https://picsum.photos/300/300?random=110",
+                        "https://picsum.photos/300/300?random=111",
+                        "https://picsum.photos/300/300?random=112"
+                    ] 
+                }
             ],
             'women': [
-                { id: 7, name: "Women's Dress", price: 59.99, oldPrice: 69.99, image: "https://picsum.photos/150/150?random=12", discount: "-14%" },
-                { id: 8, name: "Women's Blouse", price: 39.99, image: "https://picsum.photos/150/150?random=13" }
+                { 
+                    id: 7, 
+                    name: "Women's Dress", 
+                    price: 59.99, 
+                    oldPrice: 69.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=12",
+                        "https://picsum.photos/300/300?random=120",
+                        "https://picsum.photos/300/300?random=121",
+                        "https://picsum.photos/300/300?random=122"
+                    ], 
+                    discount: "-14%" 
+                },
+                { 
+                    id: 8, 
+                    name: "Women's Blouse", 
+                    price: 39.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=13",
+                        "https://picsum.photos/300/300?random=130",
+                        "https://picsum.photos/300/300?random=131",
+                        "https://picsum.photos/300/300?random=132"
+                    ] 
+                }
             ],
             'men': [
-                { id: 9, name: "Men's Shirt", price: 44.99, image: "https://picsum.photos/150/150?random=14" },
-                { id: 10, name: "Men's Pants", price: 49.99, oldPrice: 59.99, image: "https://picsum.photos/150/150?random=15", discount: "-17%" }
+                { 
+                    id: 9, 
+                    name: "Men's Shirt", 
+                    price: 44.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=14",
+                        "https://picsum.photos/300/300?random=140",
+                        "https://picsum.photos/300/300?random=141",
+                        "https://picsum.photos/300/300?random=142"
+                    ] 
+                },
+                { 
+                    id: 10, 
+                    name: "Men's Pants", 
+                    price: 49.99, 
+                    oldPrice: 59.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=15",
+                        "https://picsum.photos/300/300?random=150",
+                        "https://picsum.photos/300/300?random=151",
+                        "https://picsum.photos/300/300?random=152"
+                    ], 
+                    discount: "-17%" 
+                }
             ],
             'accessories': [
-                { id: 11, name: "Baby Blanket", price: 29.99, image: "https://picsum.photos/150/150?random=16" },
-                { id: 12, name: "Nursing Cover", price: 24.99, oldPrice: 29.99, image: "https://picsum.photos/150/150?random=17", discount: "-17%" }
+                { 
+                    id: 11, 
+                    name: "Baby Blanket", 
+                    price: 29.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=16",
+                        "https://picsum.photos/300/300?random=160",
+                        "https://picsum.photos/300/300?random=161",
+                        "https://picsum.photos/300/300?random=162"
+                    ] 
+                },
+                { 
+                    id: 12, 
+                    name: "Nursing Cover", 
+                    price: 24.99, 
+                    oldPrice: 29.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=17",
+                        "https://picsum.photos/300/300?random=170",
+                        "https://picsum.photos/300/300?random=171",
+                        "https://picsum.photos/300/300?random=172"
+                    ], 
+                    discount: "-17%" 
+                }
             ],
             'sale': [
-                { id: 13, name: "Winter Jacket", price: 79.99, oldPrice: 99.99, image: "https://picsum.photos/150/150?random=18", discount: "-20%" },
-                { id: 14, name: "Baby Shoes", price: 19.99, oldPrice: 29.99, image: "https://picsum.photos/150/150?random=19", discount: "-33%" }
+                { 
+                    id: 13, 
+                    name: "Winter Jacket", 
+                    price: 79.99, 
+                    oldPrice: 99.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=18",
+                        "https://picsum.photos/300/300?random=180",
+                        "https://picsum.photos/300/300?random=181",
+                        "https://picsum.photos/300/300?random=182"
+                    ], 
+                    discount: "-20%" 
+                },
+                { 
+                    id: 14, 
+                    name: "Baby Shoes", 
+                    price: 19.99, 
+                    oldPrice: 29.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=19",
+                        "https://picsum.photos/300/300?random=190",
+                        "https://picsum.photos/300/300?random=191",
+                        "https://picsum.photos/300/300?random=192"
+                    ], 
+                    discount: "-33%" 
+                }
+            ],
+            'electronics': [
+                { 
+                    id: 15, 
+                    name: "Smartphone", 
+                    price: 599.99, 
+                    oldPrice: 699.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=20",
+                        "https://picsum.photos/300/300?random=200",
+                        "https://picsum.photos/300/300?random=201",
+                        "https://picsum.photos/300/300?random=202"
+                    ], 
+                    discount: "-14%" 
+                },
+                { 
+                    id: 16, 
+                    name: "Wireless Earbuds", 
+                    price: 89.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=21",
+                        "https://picsum.photos/300/300?random=210",
+                        "https://picsum.photos/300/300?random=211",
+                        "https://picsum.photos/300/300?random=212"
+                    ] 
+                },
+                { 
+                    id: 17, 
+                    name: "Tablet", 
+                    price: 349.99, 
+                    oldPrice: 399.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=22",
+                        "https://picsum.photos/300/300?random=220",
+                        "https://picsum.photos/300/300?random=221",
+                        "https://picsum.photos/300/300?random=222"
+                    ], 
+                    discount: "-12%" 
+                },
+                { 
+                    id: 18, 
+                    name: "Smart Watch", 
+                    price: 199.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=23",
+                        "https://picsum.photos/300/300?random=230",
+                        "https://picsum.photos/300/300?random=231",
+                        "https://picsum.photos/300/300?random=232"
+                    ] 
+                }
+            ],
+            'home': [
+                { 
+                    id: 19, 
+                    name: "Kitchen Set", 
+                    price: 129.99, 
+                    oldPrice: 159.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=24",
+                        "https://picsum.photos/300/300?random=240",
+                        "https://picsum.photos/300/300?random=241",
+                        "https://picsum.photos/300/300?random=242"
+                    ], 
+                    discount: "-19%" 
+                },
+                { 
+                    id: 20, 
+                    name: "Bedding Set", 
+                    price: 79.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=25",
+                        "https://picsum.photos/300/300?random=250",
+                        "https://picsum.photos/300/300?random=251",
+                        "https://picsum.photos/300/300?random=252"
+                    ] 
+                },
+                { 
+                    id: 21, 
+                    name: "Home Decor", 
+                    price: 39.99, 
+                    oldPrice: 49.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=26",
+                        "https://picsum.photos/300/300?random=260",
+                        "https://picsum.photos/300/300?random=261",
+                        "https://picsum.photos/300/300?random=262"
+                    ], 
+                    discount: "-20%" 
+                },
+                { 
+                    id: 22, 
+                    name: "Storage Boxes", 
+                    price: 29.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=27",
+                        "https://picsum.photos/300/300?random=270",
+                        "https://picsum.photos/300/300?random=271",
+                        "https://picsum.photos/300/300?random=272"
+                    ] 
+                }
+            ],
+            'beauty': [
+                { 
+                    id: 23, 
+                    name: "Perfume", 
+                    price: 59.99, 
+                    oldPrice: 79.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=28",
+                        "https://picsum.photos/300/300?random=280",
+                        "https://picsum.photos/300/300?random=281",
+                        "https://picsum.photos/300/300?random=282"
+                    ], 
+                    discount: "-25%" 
+                },
+                { 
+                    id: 24, 
+                    name: "Skincare Set", 
+                    price: 89.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=29",
+                        "https://picsum.photos/300/300?random=290",
+                        "https://picsum.photos/300/300?random=291",
+                        "https://picsum.photos/300/300?random=292"
+                    ] 
+                },
+                { 
+                    id: 25, 
+                    name: "Makeup Kit", 
+                    price: 49.99, 
+                    oldPrice: 64.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=30",
+                        "https://picsum.photos/300/300?random=300",
+                        "https://picsum.photos/300/300?random=301",
+                        "https://picsum.photos/300/300?random=302"
+                    ], 
+                    discount: "-23%" 
+                },
+                { 
+                    id: 26, 
+                    name: "Hair Care", 
+                    price: 34.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=31",
+                        "https://picsum.photos/300/300?random=310",
+                        "https://picsum.photos/300/300?random=311",
+                        "https://picsum.photos/300/300?random=312"
+                    ] 
+                }
+            ],
+            'auto': [
+                { 
+                    id: 27, 
+                    name: "Car Oil Filter", 
+                    price: 12.99, 
+                    oldPrice: 16.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=32",
+                        "https://picsum.photos/300/300?random=320",
+                        "https://picsum.photos/300/300?random=321",
+                        "https://picsum.photos/300/300?random=322"
+                    ], 
+                    discount: "-24%" 
+                },
+                { 
+                    id: 28, 
+                    name: "Brake Pads Set", 
+                    price: 45.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=33",
+                        "https://picsum.photos/300/300?random=330",
+                        "https://picsum.photos/300/300?random=331",
+                        "https://picsum.photos/300/300?random=332"
+                    ] 
+                },
+                { 
+                    id: 29, 
+                    name: "Car Battery", 
+                    price: 89.99, 
+                    oldPrice: 109.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=34",
+                        "https://picsum.photos/300/300?random=340",
+                        "https://picsum.photos/300/300?random=341",
+                        "https://picsum.photos/300/300?random=342"
+                    ], 
+                    discount: "-18%" 
+                },
+                { 
+                    id: 30, 
+                    name: "Spark Plugs (4pk)", 
+                    price: 24.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=35",
+                        "https://picsum.photos/300/300?random=350",
+                        "https://picsum.photos/300/300?random=351",
+                        "https://picsum.photos/300/300?random=352"
+                    ] 
+                }
+            ],
+            'sports': [
+                { 
+                    id: 31, 
+                    name: "Yoga Mat", 
+                    price: 29.99, 
+                    oldPrice: 39.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=36",
+                        "https://picsum.photos/300/300?random=360",
+                        "https://picsum.photos/300/300?random=361",
+                        "https://picsum.photos/300/300?random=362"
+                    ], 
+                    discount: "-25%" 
+                },
+                { 
+                    id: 32, 
+                    name: "Running Shoes", 
+                    price: 79.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=37",
+                        "https://picsum.photos/300/300?random=370",
+                        "https://picsum.photos/300/300?random=371",
+                        "https://picsum.photos/300/300?random=372"
+                    ] 
+                },
+                { 
+                    id: 33, 
+                    name: "Dumbbell Set", 
+                    price: 59.99, 
+                    oldPrice: 74.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=38",
+                        "https://picsum.photos/300/300?random=380",
+                        "https://picsum.photos/300/300?random=381",
+                        "https://picsum.photos/300/300?random=382"
+                    ], 
+                    discount: "-20%" 
+                },
+                { 
+                    id: 34, 
+                    name: "Sports Bag", 
+                    price: 34.99, 
+                    images: [
+                        "https://picsum.photos/300/300?random=39",
+                        "https://picsum.photos/300/300?random=390",
+                        "https://picsum.photos/300/300?random=391",
+                        "https://picsum.photos/300/300?random=392"
+                    ] 
+                }
             ]
         };
 
@@ -430,8 +948,22 @@
             'women': "Women's Fashion",
             'men': "Men's Fashion",
             'accessories': 'Accessories',
-            'sale': 'Sale Items'
+            'sale': 'Sale Items',
+            'electronics': 'Electronics & Gadgets',
+            'home': 'Home & Kitchen',
+            'beauty': 'Beauty & Perfumes',
+            'auto': 'Auto Parts & Accessories',
+            'sports': 'Sports & Fitness'
         };
+
+        // App state
+        let currentUser = null;
+        let cart = [];
+        let wishlist = [];
+        let currentProduct = null;
+        let authMode = 'login'; // 'login' or 'register'
+        let currentCategory = null;
+        let currentImageIndex = 0;
 
         // Page navigation functions
         function showPage(pageId) {
@@ -448,15 +980,31 @@
             
             // Set current page as active
             const currentBtn = Array.from(document.querySelectorAll('nav button')).find(btn => 
-                btn.onclick.toString().includes(pageId)
+                btn.onclick && btn.onclick.toString().includes(pageId)
             );
             if (currentBtn) {
                 currentBtn.classList.remove('text-gray-600');
                 currentBtn.classList.add('text-primary');
             }
+
+            // Update page-specific content
+            if (pageId === 'cart-page') {
+                updateCartDisplay();
+            } else if (pageId === 'profile-page') {
+                updateProfileDisplay();
+            }
+        }
+
+        function showMap() {
+            showPage('map-page');
+        }
+
+        function callStore(phoneNumber) {
+            alert(`Calling store: ${phoneNumber}\nIn a real app, this would initiate a phone call.`);
         }
 
         function showCategory(category) {
+            currentCategory = category;
             showPage('product-list-page');
             document.getElementById('category-title').textContent = categoryTitles[category];
             
@@ -464,73 +1012,616 @@
             productGrid.innerHTML = '';
             
             products[category].forEach(product => {
+                const isInWishlist = wishlist.includes(product.id);
                 productGrid.innerHTML += `
-                    <div class="bg-white rounded-lg shadow-sm p-3" onclick="showProduct(${product.id})">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-32 object-cover rounded mb-2">
+                    <div class="bg-white rounded-lg shadow-sm p-3 relative" onclick="showProduct(${product.id})">
+                        ${product.discount ? `<span class="absolute top-2 right-2 bg-green-100 text-green-dark text-xs px-1 rounded">${product.discount}</span>` : ''}
+                        <img src="${product.images[0]}" alt="${product.name}" class="w-full h-32 object-cover rounded mb-2">
                         <h4 class="font-medium text-sm mb-1">${product.name}</h4>
                         <div class="flex justify-between items-center">
-                            <span class="text-red-500 font-bold">$${product.price}</span>
+                            <span class="text-green-dark font-bold">$${product.price}</span>
                             ${product.oldPrice ? `<span class="text-gray-400 text-xs line-through">$${product.oldPrice}</span>` : ''}
                         </div>
-                        ${product.discount ? `<span class="absolute top-2 right-2 bg-red-100 text-red-600 text-xs px-1 rounded">${product.discount}</span>` : ''}
+                        <button class="absolute top-2 left-2 text-${isInWishlist ? 'green-dark' : 'gray-400'}" onclick="event.stopPropagation(); toggleWishlistProduct(${product.id})">
+                            <i class="fas fa-heart"></i>
+                        </button>
                     </div>
                 `;
             });
         }
 
         function showProduct(productId) {
+            // Find product in all categories
+            let product = null;
+            for (const category in products) {
+                const found = products[category].find(p => p.id === productId);
+                if (found) {
+                    product = found;
+                    break;
+                }
+            }
+            
+            if (!product) return;
+            
+            currentProduct = product;
+            currentImageIndex = 0;
             showPage('product-detail-page');
-            // In a real app, you would fetch product details from an API
-            console.log('Showing product:', productId);
+            
+            // Update product details
+            document.getElementById('product-main-image').src = product.images[0];
+            document.getElementById('product-title').textContent = product.name;
+            document.getElementById('product-price').textContent = `$${product.price}`;
+            
+            if (product.oldPrice) {
+                document.getElementById('product-old-price').textContent = `$${product.oldPrice}`;
+                document.getElementById('product-old-price').classList.remove('hidden');
+                document.getElementById('product-discount').textContent = product.discount;
+                document.getElementById('product-discount').classList.remove('hidden');
+            } else {
+                document.getElementById('product-old-price').classList.add('hidden');
+                document.getElementById('product-discount').classList.add('hidden');
+            }
+            
+            document.getElementById('product-description').textContent = 
+                product.description || "High-quality product with excellent features. Perfect for everyday use.";
+            
+            // Load product thumbnails
+            const thumbnailsContainer = document.getElementById('product-thumbnails');
+            thumbnailsContainer.innerHTML = '';
+            
+            product.images.forEach((image, index) => {
+                thumbnailsContainer.innerHTML += `
+                    <div class="w-16 h-16 rounded border-2 ${index === 0 ? 'border-soft-green active' : 'border-gray-200'} image-thumbnail" onclick="changeProductImage(${index})">
+                        <img src="${image}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover rounded">
+                    </div>
+                `;
+            });
+            
+            // Reset selectors
+            document.querySelectorAll('#size-selector button').forEach(btn => {
+                btn.classList.remove('bg-soft-green', 'text-white');
+                if (btn.textContent === '3-6M') {
+                    btn.classList.add('bg-soft-green', 'text-white');
+                }
+            });
+            
+            document.querySelectorAll('#color-selector button').forEach(btn => {
+                btn.classList.remove('border-soft-green');
+                if (btn.getAttribute('data-color') === 'pink') {
+                    btn.classList.add('border-soft-green');
+                }
+            });
+            
+            document.getElementById('quantity').textContent = '1';
+            
+            // Update wishlist icon
+            const isInWishlist = wishlist.includes(productId);
+            document.getElementById('wishlist-icon').className = isInWishlist ? 
+                'fas fa-heart text-green-dark' : 'fas fa-heart text-gray-400';
         }
 
-        function addToCart() {
-            alert('Product added to cart!');
-            // Update cart count
-            const cartCount = document.querySelector('.relative .bg-accent');
-            if (cartCount) {
-                const currentCount = parseInt(cartCount.textContent);
-                cartCount.textContent = currentCount + 1;
+        function changeProductImage(index) {
+            if (!currentProduct) return;
+            
+            currentImageIndex = index;
+            document.getElementById('product-main-image').src = currentProduct.images[index];
+            
+            // Update active thumbnail
+            document.querySelectorAll('#product-thumbnails .image-thumbnail').forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('border-soft-green', 'active');
+                    thumb.classList.remove('border-gray-200');
+                } else {
+                    thumb.classList.remove('border-soft-green', 'active');
+                    thumb.classList.add('border-gray-200');
+                }
+            });
+        }
+
+        function toggleWishlist() {
+            if (!currentProduct) return;
+            
+            const productId = currentProduct.id;
+            const index = wishlist.indexOf(productId);
+            
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                document.getElementById('wishlist-icon').className = 'fas fa-heart text-gray-400';
+            } else {
+                wishlist.push(productId);
+                document.getElementById('wishlist-icon').className = 'fas fa-heart text-green-dark';
             }
         }
 
-        function orderViaTelegram() {
-            // This would integrate with Telegram Bot API in a real implementation
-            alert('Order will be sent via Telegram. In a real app, this would integrate with Telegram Bot API.');
+        function toggleWishlistProduct(productId) {
+            const index = wishlist.indexOf(productId);
+            const button = event.target.closest('button');
             
-            // Example of what would be sent to Telegram API:
-            const orderData = {
-                product: document.getElementById('product-title').textContent,
-                price: document.getElementById('product-price').textContent,
-                quantity: 1
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                button.innerHTML = '<i class="fas fa-heart text-gray-400"></i>';
+            } else {
+                wishlist.push(productId);
+                button.innerHTML = '<i class="fas fa-heart text-green-dark"></i>';
+            }
+        }
+
+        function decreaseQuantity() {
+            const quantityElement = document.getElementById('quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            if (quantity > 1) {
+                quantityElement.textContent = quantity - 1;
+            }
+        }
+
+        function increaseQuantity() {
+            const quantityElement = document.getElementById('quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            quantityElement.textContent = quantity + 1;
+        }
+
+        function addToCart() {
+            if (!currentProduct) return;
+            
+            const size = document.querySelector('#size-selector button.bg-soft-green').getAttribute('data-size');
+            const color = document.querySelector('#color-selector button.border-soft-green').getAttribute('data-color');
+            const quantity = parseInt(document.getElementById('quantity').textContent);
+            
+            const cartItem = {
+                id: currentProduct.id,
+                name: currentProduct.name,
+                price: currentProduct.price,
+                image: currentProduct.images[0],
+                size: size,
+                color: color,
+                quantity: quantity
             };
             
+            // Check if item already in cart
+            const existingIndex = cart.findIndex(item => 
+                item.id === cartItem.id && item.size === cartItem.size && item.color === cartItem.color
+            );
+            
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += quantity;
+            } else {
+                cart.push(cartItem);
+            }
+            
+            updateCartCount();
+            alert('Product added to cart!');
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Your cart is empty</p>';
+                document.getElementById('cart-subtotal').textContent = '$0.00';
+                document.getElementById('cart-total').textContent = '$0.00';
+                return;
+            }
+            
+            let subtotal = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                cartItemsContainer.innerHTML += `
+                    <div class="flex items-center bg-white rounded-lg p-3 shadow-sm">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded">
+                        <div class="ml-3 flex-1">
+                            <h3 class="font-medium text-sm">${item.name}</h3>
+                            <p class="text-gray-600 text-xs">Size: ${item.size} | Color: ${item.color}</p>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-green-dark font-bold">$${item.price}</span>
+                                <div class="flex items-center border rounded">
+                                    <button class="px-2 text-gray-600" onclick="updateCartItemQuantity(${index}, -1)">-</button>
+                                    <span class="px-2">${item.quantity}</span>
+                                    <button class="px-2 text-gray-600" onclick="updateCartItemQuantity(${index}, 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-gray-400" onclick="removeFromCart(${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            const shipping = 4.99;
+            const total = subtotal + shipping;
+            
+            document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function updateCartItemQuantity(index, change) {
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            
+            updateCartDisplay();
+            updateCartCount();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+            updateCartCount();
+        }
+
+        function orderViaTelegram() {
+            if (!currentProduct) return;
+            
+            const size = document.querySelector('#size-selector button.bg-soft-green').getAttribute('data-size');
+            const color = document.querySelector('#color-selector button.border-soft-green').getAttribute('data-color');
+            const quantity = parseInt(document.getElementById('quantity').textContent);
+            
+            const orderData = {
+                product: currentProduct.name,
+                price: currentProduct.price,
+                size: size,
+                color: color,
+                quantity: quantity
+            };
+            
+            // This would integrate with Telegram Bot API in a real implementation
+            const message = `New order via Telegram:\nProduct: ${orderData.product}\nPrice: $${orderData.price}\nSize: ${orderData.size}\nColor: ${orderData.color}\nQuantity: ${orderData.quantity}`;
+            
+            alert('Order will be sent via Telegram. In a real app, this would integrate with Telegram Bot API.');
             console.log('Telegram order data:', orderData);
+            console.log('Message to send:', message);
         }
 
         function showCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
             showPage('checkout-page');
+            
+            // Calculate totals
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 4.99;
+            const total = subtotal + shipping;
+            
+            document.getElementById('checkout-item-count').textContent = cart.reduce((count, item) => count + item.quantity, 0);
+            document.getElementById('checkout-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('checkout-shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('checkout-total').textContent = `$${total.toFixed(2)}`;
+            
+            // Pre-fill user data if logged in
+            if (currentUser) {
+                document.getElementById('checkout-name').value = currentUser.name || '';
+                document.getElementById('checkout-email').value = currentUser.email || '';
+                document.getElementById('checkout-phone').value = currentUser.phone || '';
+                document.getElementById('checkout-address').value = currentUser.address || '';
+            }
         }
 
         function placeOrder() {
+            const name = document.getElementById('checkout-name').value;
+            const phone = document.getElementById('checkout-phone').value;
+            const email = document.getElementById('checkout-email').value;
+            const address = document.getElementById('checkout-address').value;
+            const payment = document.getElementById('checkout-payment').value;
+            
+            if (!name || !phone || !email || !address) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Save user data if logged in
+            if (currentUser) {
+                currentUser.phone = phone;
+                currentUser.address = address;
+                // In a real app, you would save this to a database
+            }
+            
+            // Create order
+            const order = {
+                id: Date.now(),
+                items: [...cart],
+                customer: { name, phone, email, address },
+                payment,
+                total: document.getElementById('checkout-total').textContent,
+                date: new Date().toLocaleDateString()
+            };
+            
+            // In a real app, you would send this to a server
+            console.log('Order placed:', order);
+            
+            // Clear cart
+            cart = [];
+            updateCartCount();
+            
             alert('Order placed successfully!');
             showPage('home-page');
+        }
+
+        function toggleSearch() {
+            const searchContainer = document.getElementById('search-container');
+            searchContainer.classList.toggle('hidden');
             
-            // Reset cart count
-            const cartCount = document.querySelector('.relative .bg-accent');
-            if (cartCount) {
-                cartCount.textContent = '0';
+            if (!searchContainer.classList.contains('hidden')) {
+                document.getElementById('search-input').focus();
+            }
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (!query) {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            // Search in all products
+            const results = [];
+            for (const category in products) {
+                products[category].forEach(product => {
+                    if (product.name.toLowerCase().includes(query)) {
+                        results.push({...product, category});
+                    }
+                });
+            }
+            
+            if (results.length === 0) {
+                alert('No products found for your search');
+                return;
+            }
+            
+            // Show results in product list page
+            currentCategory = 'search';
+            showPage('product-list-page');
+            document.getElementById('category-title').textContent = `Search Results for "${query}"`;
+            
+            const productGrid = document.getElementById('product-grid');
+            productGrid.innerHTML = '';
+            
+            results.forEach(product => {
+                const isInWishlist = wishlist.includes(product.id);
+                productGrid.innerHTML += `
+                    <div class="bg-white rounded-lg shadow-sm p-3 relative" onclick="showProduct(${product.id})">
+                        ${product.discount ? `<span class="absolute top-2 right-2 bg-green-100 text-green-dark text-xs px-1 rounded">${product.discount}</span>` : ''}
+                        <img src="${product.images[0]}" alt="${product.name}" class="w-full h-32 object-cover rounded mb-2">
+                        <h4 class="font-medium text-sm mb-1">${product.name}</h4>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-dark font-bold">$${product.price}</span>
+                            ${product.oldPrice ? `<span class="text-gray-400 text-xs line-through">$${product.oldPrice}</span>` : ''}
+                        </div>
+                        <span class="text-xs text-gray-500 block mt-1">${categoryTitles[product.category]}</span>
+                        <button class="absolute top-2 left-2 text-${isInWishlist ? 'green-dark' : 'gray-400'}" onclick="event.stopPropagation(); toggleWishlistProduct(${product.id})">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            // Hide search bar
+            document.getElementById('search-container').classList.add('hidden');
+        }
+
+        function sortProducts() {
+            if (!currentCategory || currentCategory === 'search') return;
+            
+            const sortBy = document.getElementById('sort-select').value;
+            const sortedProducts = [...products[currentCategory]];
+            
+            switch(sortBy) {
+                case 'price-low':
+                    sortedProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    sortedProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                default:
+                    // Default sorting (original order)
+                    break;
+            }
+            
+            const productGrid = document.getElementById('product-grid');
+            productGrid.innerHTML = '';
+            
+            sortedProducts.forEach(product => {
+                const isInWishlist = wishlist.includes(product.id);
+                productGrid.innerHTML += `
+                    <div class="bg-white rounded-lg shadow-sm p-3 relative" onclick="showProduct(${product.id})">
+                        ${product.discount ? `<span class="absolute top-2 right-2 bg-green-100 text-green-dark text-xs px-1 rounded">${product.discount}</span>` : ''}
+                        <img src="${product.images[0]}" alt="${product.name}" class="w-full h-32 object-cover rounded mb-2">
+                        <h4 class="font-medium text-sm mb-1">${product.name}</h4>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-dark font-bold">$${product.price}</span>
+                            ${product.oldPrice ? `<span class="text-gray-400 text-xs line-through">$${product.oldPrice}</span>` : ''}
+                        </div>
+                        <button class="absolute top-2 left-2 text-${isInWishlist ? 'green-dark' : 'gray-400'}" onclick="event.stopPropagation(); toggleWishlistProduct(${product.id})">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleAuth() {
+            if (currentUser) {
+                showPage('profile-page');
+            } else {
+                showPage('auth-page');
+            }
+        }
+
+        function toggleAuthMode() {
+            authMode = authMode === 'login' ? 'register' : 'login';
+            updateAuthDisplay();
+        }
+
+        function updateAuthDisplay() {
+            if (authMode === 'login') {
+                document.getElementById('auth-title').textContent = 'Welcome Back';
+                document.getElementById('auth-submit').textContent = 'Sign In';
+                document.getElementById('auth-switch').innerHTML = 'Don\'t have an account? <a href="#" class="text-primary" onclick="toggleAuthMode()">Sign up</a>';
+                document.getElementById('name-field').classList.add('hidden');
+            } else {
+                document.getElementById('auth-title').textContent = 'Create Account';
+                document.getElementById('auth-submit').textContent = 'Sign Up';
+                document.getElementById('auth-switch').innerHTML = 'Already have an account? <a href="#" class="text-primary" onclick="toggleAuthMode()">Sign in</a>';
+                document.getElementById('name-field').classList.remove('hidden');
+            }
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (authMode === 'register') {
+                const name = document.getElementById('auth-name').value;
+                if (!name) {
+                    alert('Please enter your name');
+                    return;
+                }
+                
+                // In a real app, you would send this to a server
+                currentUser = {
+                    name: name,
+                    email: email,
+                    // In a real app, you would hash the password
+                };
+                
+                alert('Account created successfully!');
+            } else {
+                // In a real app, you would verify credentials with a server
+                currentUser = {
+                    name: 'Sarah Johnson',
+                    email: email,
+                };
+                
+                alert('Logged in successfully!');
+            }
+            
+            updateProfileDisplay();
+            showPage('profile-page');
+        }
+
+        function signInWithGoogle() {
+            // In a real app, this would integrate with Google OAuth
+            alert('In a real app, this would redirect to Google OAuth');
+            
+            // Simulate successful login
+            currentUser = {
+                name: 'Google User',
+                email: 'user@gmail.com',
+            };
+            
+            updateProfileDisplay();
+            showPage('profile-page');
+        }
+
+        function updateProfileDisplay() {
+            if (currentUser) {
+                document.getElementById('profile-name').textContent = currentUser.name;
+                document.getElementById('profile-email').textContent = currentUser.email;
+                document.getElementById('login-button').classList.add('hidden');
+                document.getElementById('logout-button').classList.remove('hidden');
+                
+                // In a real app, you would fetch order history and addresses from a server
+                document.getElementById('order-history').innerHTML = `
+                    <h3 class="font-semibold">Order History</h3>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">Order #12345</span>
+                            <span class="text-green-600 text-sm">Delivered</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">2 items • $58.97 • Dec 15, 2023</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">Order #12344</span>
+                            <span class="text-blue-600 text-sm">Shipped</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">1 item • $29.98 • Dec 10, 2023</p>
+                    </div>
+                `;
+                
+                document.getElementById('saved-addresses').innerHTML = `
+                    <h3 class="font-semibold">Saved Addresses</h3>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <p class="font-medium">Home Address</p>
+                        <p class="text-gray-600 text-sm">123 Main St, Apt 4B, New York, NY 10001</p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('profile-name').textContent = 'Guest User';
+                document.getElementById('profile-email').textContent = 'Please log in to see your profile';
+                document.getElementById('login-button').classList.remove('hidden');
+                document.getElementById('logout-button').classList.add('hidden');
+                
+                document.getElementById('order-history').innerHTML = `
+                    <h3 class="font-semibold">Order History</h3>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <p class="text-gray-600 text-sm text-center">Please log in to see your order history</p>
+                    </div>
+                `;
+                
+                document.getElementById('saved-addresses').innerHTML = `
+                    <h3 class="font-semibold">Saved Addresses</h3>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <p class="text-gray-600 text-sm text-center">Please log in to see your saved addresses</p>
+                    </div>
+                `;
             }
         }
 
         function logout() {
+            currentUser = null;
             alert('Logged out successfully');
+            updateProfileDisplay();
             showPage('home-page');
         }
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             showPage('home-page');
+            updateCartCount();
+            updateAuthDisplay();
+            
+            // Add event listeners for size and color selection
+            document.querySelectorAll('#size-selector button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('#size-selector button').forEach(btn => {
+                        btn.classList.remove('bg-soft-green', 'text-white');
+                    });
+                    this.classList.add('bg-soft-green', 'text-white');
+                });
+            });
+            
+            document.querySelectorAll('#color-selector button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('#color-selector button').forEach(btn => {
+                        btn.classList.remove('border-soft-green');
+                    });
+                    this.classList.add('border-soft-green');
+                });
+            });
         });
     </script>
 </body>
