@@ -31,19 +31,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="font-sans bg-white text-gray-800 min-h-screen flex flex-col">
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-            <span>Loading...</span>
-        </div>
-    </div>
-
-    <!-- Notification Toast -->
-    <div id="notification" class="fixed top-4 right-4 z-40 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300">
-        <span id="notification-text"></span>
-    </div>
-
     <!-- App Container -->
     <div class="max-w-md mx-auto w-full bg-white shadow-lg min-h-screen relative pb-16">
         <!-- Header with Search -->
@@ -52,26 +39,20 @@
                 <div class="flex items-center justify-between">
                     <h1 class="text-xl font-bold text-soft-pink">Little Treasures</h1>
                     <div class="flex items-center space-x-3">
-                        <button class="p-2 text-gray-600" onclick="toggleSearch()">
+                        <button class="p-2 text-gray-600">
                             <i class="fas fa-search"></i>
                         </button>
-                        <button class="p-2 text-gray-600 relative" onclick="showPage('cart-page')">
+                        <button class="p-2 text-gray-600 relative">
                             <i class="fas fa-shopping-cart"></i>
-                            <span id="cart-count" class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                            <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
                         </button>
                     </div>
                 </div>
-
+                
                 <!-- Search Bar -->
-                <div id="search-bar" class="mt-3 relative hidden">
-                    <input
-                        type="text"
-                        id="search-input"
-                        placeholder="Search products..."
-                        class="w-full px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-soft-blue text-sm"
-                        onkeypress="handleSearchKeyPress(event)"
-                    >
-                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-soft-blue text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="performSearch()">
+                <div class="mt-3 relative">
+                    <input type="text" placeholder="Search products..." class="w-full px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-soft-blue text-sm">
+                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-soft-blue text-white p-1 rounded-full w-6 h-6 flex items-center justify-center">
                         <i class="fas fa-search text-xs"></i>
                     </button>
                 </div>
@@ -88,12 +69,12 @@
                         <div>
                             <h2 class="text-lg font-bold mb-2">Style for Your Little Ones</h2>
                             <p class="text-sm text-gray-600 mb-3">Discover premium baby clothes & accessories</p>
-                            <button class="bg-soft-blue text-white px-4 py-2 rounded-full text-sm font-medium" onclick="showCategory('all')">Shop Now</button>
+                            <button class="bg-soft-blue text-white px-4 py-2 rounded-full text-sm font-medium">Shop Now</button>
                         </div>
                         <div>
-                            <img
-                                src="https://picsum.photos/150/150?random=1"
-                                alt="Happy family with kids"
+                            <img 
+                                src="https://picsum.photos/150/150?random=1" 
+                                alt="Happy family with kids" 
                                 class="rounded-lg w-full"
                                 loading="eager"
                             >
@@ -104,63 +85,74 @@
                 <!-- Categories -->
                 <h3 class="font-semibold mb-4">Categories</h3>
                 <div class="grid grid-cols-3 gap-3 mb-6">
-                    <div class="bg-pastel-beige rounded-lg p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showCategory('kids')">
+                    <div class="bg-pastel-beige rounded-lg p-3 text-center" onclick="showCategory('kids')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-child text-xl text-soft-blue"></i>
                         </div>
                         <span class="text-sm font-medium">Kids</span>
                     </div>
-                    <div class="bg-pastel-pink rounded-lg p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showCategory('baby')">
+                    <div class="bg-pastel-pink rounded-lg p-3 text-center" onclick="showCategory('baby')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-baby text-xl text-soft-pink"></i>
                         </div>
                         <span class="text-sm font-medium">Baby</span>
                     </div>
-                    <div class="bg-pastel-blue rounded-lg p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showCategory('women')">
+                    <div class="bg-pastel-blue rounded-lg p-3 text-center" onclick="showCategory('women')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-female text-xl text-soft-blue"></i>
                         </div>
                         <span class="text-sm font-medium">Women</span>
                     </div>
-                    <div class="bg-pastel-beige rounded-lg p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showCategory('men')">
+                    <div class="bg-pastel-beige rounded-lg p-3 text-center" onclick="showCategory('men')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-male text-xl text-soft-pink"></i>
                         </div>
                         <span class="text-sm font-medium">Men</span>
                     </div>
-                    <div class="bg-pastel-pink rounded-lg p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showCategory('accessories')">
+                    <div class="bg-pastel-pink rounded-lg p-3 text-center" onclick="showCategory('accessories')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-mitten text-xl text-soft-blue"></i>
                         </div>
                         <span class="text-sm font-medium">Accessories</span>
                     </div>
-                    <div class="bg-pastel-blue rounded-lg p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showCategory('all')">
+                    <div class="bg-pastel-blue rounded-lg p-3 text-center" onclick="showCategory('sale')">
                         <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-th text-xl text-red-500"></i>
+                            <i class="fas fa-tag text-xl text-red-500"></i>
                         </div>
-                        <span class="text-sm font-medium text-red-500">All</span>
+                        <span class="text-sm font-medium text-red-500">Sale</span>
                     </div>
                 </div>
 
                 <!-- Featured Products -->
                 <h3 class="font-semibold mb-4">Featured Products</h3>
-                <div id="featured-products" class="grid grid-cols-2 gap-3 mb-6">
-                    <!-- Products will be loaded here -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-3" onclick="showProduct(1)">
+                        <img src="https://picsum.photos/150/150?random=2" alt="Organic Baby Bodysuit" class="w-full h-32 object-cover rounded mb-2">
+                        <h4 class="font-medium text-sm mb-1">Organic Bodysuit</h4>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-500 font-bold">$24.99</span>
+                            <span class="text-gray-400 text-xs line-through">$31.99</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-3" onclick="showProduct(2)">
+                        <img src="https://picsum.photos/150/150?random=3" alt="Premium Stroller" class="w-full h-32 object-cover rounded mb-2">
+                        <h4 class="font-medium text-sm mb-1">Compact Stroller</h4>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-800 font-bold">$189.99</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Other pages are initially hidden -->
             <!-- Product List Page -->
             <div id="product-list-page" class="hidden">
                 <div class="flex items-center justify-between mb-4">
-                    <button class="p-2 text-gray-600" onclick="showPage('home-page')">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <h2 class="font-bold text-lg" id="category-title">All Products</h2>
-                    <select class="border rounded-lg px-2 py-1 text-sm" id="sort-select" onchange="handleSortChange()">
-                        <option value="name">Sort by Name</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                        <option value="newest">Newest First</option>
+                    <h2 class="font-bold text-lg" id="category-title">Kids Clothing</h2>
+                    <select class="border rounded-lg px-2 py-1 text-sm">
+                        <option>Sort by</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-3" id="product-grid">
@@ -171,867 +163,375 @@
             <!-- Product Detail Page -->
             <div id="product-detail-page" class="hidden">
                 <div class="mb-4">
-                    <div class="flex items-center justify-between mb-4">
-                        <button class="p-2 text-gray-600" onclick="goBackFromProduct()">
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
-                        <button class="p-2 text-gray-600" onclick="toggleFavorite()">
-                            <i id="favorite-icon" class="far fa-heart text-gray-400"></i>
-                        </button>
-                    </div>
-
-                    <div class="relative mb-4">
-                        <img src="" alt="Product image" class="w-full rounded-lg mb-3" id="product-image">
-                    </div>
-
-                    <h2 class="font-bold text-xl mb-2" id="product-title">Loading...</h2>
-                    <div class="flex items-center mb-3">
-                        <span class="text-primary font-bold text-lg" id="product-price">$0.00</span>
-                        <span class="text-gray-500 text-sm ml-2" id="product-stock"></span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4" id="product-description">Loading description...</p>
-
-                    <div class="mb-4">
-                        <h3 class="font-semibold mb-2">Quantity</h3>
-                        <div class="flex items-center border rounded-lg w-32">
-                            <button class="px-3 py-2 text-gray-600 hover:bg-gray-100" onclick="decreaseQuantity()">-</button>
-                            <span class="flex-1 text-center py-2" id="quantity-display">1</span>
-                            <button class="px-3 py-2 text-gray-600 hover:bg-gray-100" onclick="increaseQuantity()">+</button>
+                    <div class="relative">
+                        <img src="https://picsum.photos/300/300?random=4" alt="Product image" class="w-full rounded-lg mb-3" id="product-image">
+                        <div class="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow">
+                            <i class="fas fa-heart text-gray-400"></i>
                         </div>
                     </div>
-
-                    <div class="flex gap-2 mb-4">
-                        <button class="flex-1 bg-soft-blue text-white py-3 rounded-lg font-medium hover:bg-blue-400 transition-colors" onclick="addToCart()">
-                            <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                    <h2 class="font-bold text-xl mb-2" id="product-title">Organic Cotton Bodysuit</h2>
+                    <div class="flex items-center mb-3">
+                        <span class="text-red-500 font-bold text-lg" id="product-price">$24.99</span>
+                        <span class="text-gray-400 text-sm line-through ml-2" id="product-old-price">$31.99</span>
+                        <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded ml-auto" id="product-discount">-20%</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4" id="product-description">Soft organic cotton bodysuit with snap closures. Perfect for everyday wear. Hypoallergenic and gentle on baby's skin.</p>
+                    
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2">Size</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="border rounded-lg px-3 py-1 text-sm">0-3M</button>
+                            <button class="border rounded-lg px-3 py-1 text-sm bg-soft-blue text-white">3-6M</button>
+                            <button class="border rounded-lg px-3 py-1 text-sm">6-9M</button>
+                            <button class="border rounded-lg px-3 py-1 text-sm">9-12M</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2">Color</h3>
+                        <div class="flex gap-2">
+                            <button class="w-8 h-8 rounded-full bg-pastel-blue border-2 border-white shadow"></button>
+                            <button class="w-8 h-8 rounded-full bg-pastel-pink border-2 border-soft-blue"></button>
+                            <button class="w-8 h-8 rounded-full bg-pastel-beige border-2 border-white shadow"></button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2">Quantity</h3>
+                        <div class="flex items-center border rounded-lg w-24">
+                            <button class="px-2 py-1 text-gray-600">-</button>
+                            <span class="flex-1 text-center">1</span>
+                            <button class="px-2 py-1 text-gray-600">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <button class="flex-1 bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="addToCart()">Add to Cart</button>
+                        <button class="flex-1 bg-green-500 text-white py-3 rounded-lg font-medium" onclick="orderViaTelegram()">
+                            <i class="fab fa-telegram mr-1"></i> Order via Telegram
                         </button>
                     </div>
-
-                    <button class="w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition-colors" onclick="orderViaTelegram()">
-                        <i class="fab fa-telegram mr-2"></i>Order via Telegram
-                    </button>
                 </div>
             </div>
 
             <!-- Cart Page -->
             <div id="cart-page" class="hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <button class="p-2 text-gray-600" onclick="showPage('home-page')">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <h2 class="font-bold text-lg">Your Cart</h2>
-                    <button class="p-2 text-gray-600" onclick="clearCart()" id="clear-cart-btn">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-
-                <div id="cart-empty" class="text-center py-8">
-                    <i class="fas fa-shopping-cart text-gray-300 text-4xl mb-4"></i>
-                    <p class="text-gray-500 mb-4">Your cart is empty</p>
-                    <button class="bg-soft-blue text-white px-6 py-2 rounded-lg" onclick="showPage('home-page')">Start Shopping</button>
-                </div>
-
-                <div id="cart-content" class="hidden">
-                    <div class="space-y-3 mb-6" id="cart-items">
-                        <!-- Cart items will be loaded here -->
+                <h2 class="font-bold text-lg mb-4">Your Cart</h2>
+                <div class="space-y-3 mb-6" id="cart-items">
+                    <div class="flex items-center bg-white rounded-lg p-3 shadow-sm">
+                        <img src="https://picsum.photos/80/80?random=5" alt="Product" class="w-16 h-16 rounded">
+                        <div class="ml-3 flex-1">
+                            <h3 class="font-medium text-sm">Organic Bodysuit</h3>
+                            <p class="text-gray-600 text-xs">Size: 3-6M | Color: Blue</p>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-red-500 font-bold">$24.99</span>
+                                <div class="flex items-center border rounded">
+                                    <button class="px-2 text-gray-600">-</button>
+                                    <span class="px-2">1</span>
+                                    <button class="px-2 text-gray-600">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-gray-400">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-
-                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
-                        <div class="flex justify-between mb-2">
-                            <span>Subtotal</span>
-                            <span id="cart-subtotal">$0.00</span>
-                        </div>
-                        <div class="flex justify-between mb-2">
-                            <span>Shipping</span>
-                            <span id="cart-shipping">$4.99</span>
-                        </div>
-                        <div class="flex justify-between font-bold text-lg border-t pt-2">
-                            <span>Total</span>
-                            <span id="cart-total">$4.99</span>
-                        </div>
-                    </div>
-
-                    <button class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium hover:bg-blue-400 transition-colors" onclick="showCheckout()">Proceed to Checkout</button>
                 </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between mb-2">
+                        <span>Subtotal</span>
+                        <span>$24.99</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span>Shipping</span>
+                        <span>$4.99</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-lg border-t pt-2">
+                        <span>Total</span>
+                        <span>$29.98</span>
+                    </div>
+                </div>
+                
+                <button class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="showCheckout()">Proceed to Checkout</button>
             </div>
 
             <!-- Checkout Page -->
             <div id="checkout-page" class="hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <button class="p-2 text-gray-600" onclick="showPage('cart-page')">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <h2 class="font-bold text-lg">Checkout</h2>
-                    <div></div>
-                </div>
-
-                <form id="checkout-form" class="space-y-4">
+                <h2 class="font-bold text-lg mb-4">Checkout</h2>
+                <form class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Full Name *</label>
-                        <input type="text" id="customer-name" class="w-full border rounded-lg px-3 py-2" placeholder="John Doe" required>
+                        <label class="block text-sm font-medium mb-1">Full Name</label>
+                        <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="John Doe" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Phone Number *</label>
-                        <input type="tel" id="customer-phone" class="w-full border rounded-lg px-3 py-2" placeholder="+1 234 567 8900" required>
+                        <label class="block text-sm font-medium mb-1">Phone Number</label>
+                        <input type="tel" class="w-full border rounded-lg px-3 py-2" placeholder="+1 234 567 8900" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Delivery Address *</label>
-                        <textarea id="customer-address" class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Street, City, State, ZIP Code" required></textarea>
+                        <label class="block text-sm font-medium mb-1">Delivery Address</label>
+                        <textarea class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Street, City, ZIP Code" required></textarea>
                     </div>
-
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Payment Method</label>
+                        <select class="w-full border rounded-lg px-3 py-2">
+                            <option>Cash on Delivery</option>
+                            <option>Credit Card</option>
+                            <option>PayPal</option>
+                        </select>
+                    </div>
+                    
                     <div class="bg-gray-50 rounded-lg p-4 mb-4">
                         <div class="font-bold mb-2">Order Summary</div>
-                        <div id="checkout-items" class="space-y-1 text-sm mb-3">
-                            <!-- Order items will be loaded here -->
-                        </div>
                         <div class="flex justify-between text-sm mb-1">
-                            <span>Subtotal</span>
-                            <span id="checkout-subtotal">$0.00</span>
+                            <span>Items (1)</span>
+                            <span>$24.99</span>
                         </div>
                         <div class="flex justify-between text-sm mb-1">
                             <span>Shipping</span>
-                            <span id="checkout-shipping">$4.99</span>
+                            <span>$4.99</span>
                         </div>
                         <div class="flex justify-between font-bold border-t pt-2">
                             <span>Total</span>
-                            <span id="checkout-total">$4.99</span>
+                            <span>$29.98</span>
                         </div>
                     </div>
-
-                    <button type="submit" class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium hover:bg-blue-400 transition-colors">
-                        <i class="fas fa-check mr-2"></i>Place Order
-                    </button>
+                    
+                    <button type="button" class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="placeOrder()">Place Order</button>
                 </form>
             </div>
 
-            <!-- Order Success Page -->
-            <div id="order-success-page" class="hidden">
-                <div class="text-center py-8">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-check text-green-600 text-2xl"></i>
+            <!-- Login/Register Page -->
+            <div id="auth-page" class="hidden">
+                <h2 class="font-bold text-lg text-center mb-6">Welcome Back</h2>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Email</label>
+                        <input type="email" class="w-full border rounded-lg px-3 py-2" placeholder="your@email.com" required>
                     </div>
-                    <h2 class="font-bold text-xl mb-2">Order Placed Successfully!</h2>
-                    <p class="text-gray-600 mb-4">Thank you for your purchase. We'll notify you about order updates via our admin system.</p>
-
-                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                        <div class="text-sm text-gray-600 mb-2">Order Number</div>
-                        <div class="font-mono font-bold" id="success-order-number">Loading...</div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Password</label>
+                        <input type="password" class="w-full border rounded-lg px-3 py-2" placeholder="••••••••" required>
                     </div>
+                    <button type="button" class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium">Sign In</button>
+                </form>
+                
+                <div class="text-center my-4">
+                    <span class="text-gray-500 text-sm">or continue with</span>
+                </div>
+                
+                <button class="w-full border border-gray-300 py-3 rounded-lg font-medium flex items-center justify-center">
+                    <i class="fab fa-google text-red-500 mr-2"></i>
+                    Sign in with Google
+                </button>
+                
+                <div class="text-center mt-4">
+                    <span class="text-sm">Don't have an account? <a href="#" class="text-soft-blue">Sign up</a></span>
+                </div>
+            </div>
 
-                    <div class="space-y-3">
-                        <button class="w-full bg-soft-blue text-white py-3 rounded-lg font-medium" onclick="showPage('home-page')">Continue Shopping</button>
-                        <p class="text-xs text-gray-500">You will receive updates through our Telegram admin system</p>
+            <!-- Profile Page -->
+            <div id="profile-page" class="hidden">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-pastel-blue rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-user text-2xl text-soft-blue"></i>
+                    </div>
+                    <h2 class="font-bold text-lg">Sarah Johnson</h2>
+                    <p class="text-gray-600 text-sm">sarah@example.com</p>
+                </div>
+                
+                <div class="space-y-3 mb-6">
+                    <h3 class="font-semibold">Order History</h3>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">Order #12345</span>
+                            <span class="text-green-600 text-sm">Delivered</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">2 items • $58.97 • Dec 15, 2023</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">Order #12344</span>
+                            <span class="text-blue-600 text-sm">Shipped</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">1 item • $29.98 • Dec 10, 2023</p>
                     </div>
                 </div>
+                
+                <div class="space-y-3 mb-6">
+                    <h3 class="font-semibold">Saved Addresses</h3>
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                        <p class="font-medium">Home Address</p>
+                        <p class="text-gray-600 text-sm">123 Main St, Apt 4B, New York, NY 10001</p>
+                    </div>
+                </div>
+                
+                <button class="w-full border border-red-300 text-red-600 py-3 rounded-lg font-medium" onclick="logout()">Log Out</button>
             </div>
         </main>
 
         <!-- Bottom Navigation -->
         <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
             <div class="max-w-md mx-auto grid grid-cols-4 gap-1 px-2 py-2">
-                <button class="flex flex-col items-center text-primary" onclick="showPage('home-page')" id="nav-home">
+                <button class="flex flex-col items-center text-primary" onclick="showPage('home-page')">
                     <i class="fas fa-home"></i>
                     <span class="text-xs mt-1">Home</span>
                 </button>
-                <button class="flex flex-col items-center text-gray-600" onclick="showCategory('all')" id="nav-categories">
+                <button class="flex flex-col items-center text-gray-600" onclick="showPage('product-list-page')">
                     <i class="fas fa-th-large"></i>
-                    <span class="text-xs mt-1">Products</span>
+                    <span class="text-xs mt-1">Categories</span>
                 </button>
-                <button class="flex flex-col items-center text-gray-600" onclick="showPage('cart-page')" id="nav-cart">
+                <button class="flex flex-col items-center text-gray-600" onclick="showPage('cart-page')">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="text-xs mt-1">Cart</span>
                 </button>
-                <button class="flex flex-col items-center text-gray-600" onclick="showInfo()" id="nav-info">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="text-xs mt-1">Info</span>
+                <button class="flex flex-col items-center text-gray-600" onclick="showPage('profile-page')">
+                    <i class="fas fa-user"></i>
+                    <span class="text-xs mt-1">Profile</span>
                 </button>
             </div>
         </nav>
     </div>
 
     <script>
-        // Configuration
-        const API_BASE_URL = "https://foreknowingly-gruffish-jamison.ngrok-free.dev/api";
-        const SHIPPING_COST = 4.99;
-        const FREE_SHIPPING_THRESHOLD = 75.00;
+        // Sample product data
+        const products = {
+            'kids': [
+                { id: 1, name: "Kids T-Shirt", price: 19.99, oldPrice: 24.99, image: "https://picsum.photos/150/150?random=6", discount: "-20%" },
+                { id: 2, name: "Children's Jeans", price: 29.99, image: "https://picsum.photos/150/150?random=7" },
+                { id: 3, name: "Kids Sweater", price: 34.99, oldPrice: 39.99, image: "https://picsum.photos/150/150?random=8", discount: "-13%" },
+                { id: 4, name: "Children's Shoes", price: 49.99, image: "https://picsum.photos/150/150?random=9" }
+            ],
+            'baby': [
+                { id: 5, name: "Baby Bodysuit", price: 14.99, oldPrice: 19.99, image: "https://picsum.photos/150/150?random=10", discount: "-25%" },
+                { id: 6, name: "Baby Romper", price: 22.99, image: "https://picsum.photos/150/150?random=11" }
+            ],
+            'women': [
+                { id: 7, name: "Women's Dress", price: 59.99, oldPrice: 69.99, image: "https://picsum.photos/150/150?random=12", discount: "-14%" },
+                { id: 8, name: "Women's Blouse", price: 39.99, image: "https://picsum.photos/150/150?random=13" }
+            ],
+            'men': [
+                { id: 9, name: "Men's Shirt", price: 44.99, image: "https://picsum.photos/150/150?random=14" },
+                { id: 10, name: "Men's Pants", price: 49.99, oldPrice: 59.99, image: "https://picsum.photos/150/150?random=15", discount: "-17%" }
+            ],
+            'accessories': [
+                { id: 11, name: "Baby Blanket", price: 29.99, image: "https://picsum.photos/150/150?random=16" },
+                { id: 12, name: "Nursing Cover", price: 24.99, oldPrice: 29.99, image: "https://picsum.photos/150/150?random=17", discount: "-17%" }
+            ],
+            'sale': [
+                { id: 13, name: "Winter Jacket", price: 79.99, oldPrice: 99.99, image: "https://picsum.photos/150/150?random=18", discount: "-20%" },
+                { id: 14, name: "Baby Shoes", price: 19.99, oldPrice: 29.99, image: "https://picsum.photos/150/150?random=19", discount: "-33%" }
+            ]
+        };
 
-        // Global state
-        let currentProducts = [];
-        let currentProduct = null;
-        let cart = JSON.parse(localStorage.getItem('littleTreasuresCart') || '[]');
-        let currentQuantity = 1;
-        let currentCategory = 'all';
-        let isLoading = false;
+        const categoryTitles = {
+            'kids': 'Kids Clothing',
+            'baby': 'Baby Essentials',
+            'women': "Women's Fashion",
+            'men': "Men's Fashion",
+            'accessories': 'Accessories',
+            'sale': 'Sale Items'
+        };
 
-        // API Functions
-        async function apiCall(endpoint, options = {}) {
-            try {
-                showLoading(true);
-                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...options.headers
-                    },
-                    ...options
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
-                }
-
-                return await response.json();
-            } catch (error) {
-                console.error('API call failed:', error);
-                showNotification('Connection error. Please try again.', 'error');
-                throw error;
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        async function loadProducts(category = null) {
-            try {
-                const products = await apiCall('/products');
-
-                // Filter by category if specified
-                if (category && category !== 'all') {
-                    currentProducts = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
-                } else {
-                    currentProducts = products;
-                }
-
-                return currentProducts;
-            } catch (error) {
-                console.error('Failed to load products:', error);
-                return [];
-            }
-        }
-
-        async function createOrder(orderData) {
-            try {
-                const result = await apiCall('/orders', {
-                    method: 'POST',
-                    body: JSON.stringify(orderData)
-                });
-                return result;
-            } catch (error) {
-                console.error('Failed to create order:', error);
-                throw error;
-            }
-        }
-
-        // UI Functions
-        function showLoading(show) {
-            const overlay = document.getElementById('loading-overlay');
-            if (show) {
-                overlay.classList.remove('hidden');
-                isLoading = true;
-            } else {
-                overlay.classList.add('hidden');
-                isLoading = false;
-            }
-        }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const text = document.getElementById('notification-text');
-
-            text.textContent = message;
-
-            // Update colors based on type
-            notification.className = `fixed top-4 right-4 z-40 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 ${
-                type === 'success' ? 'bg-green-500 text-white' :
-                type === 'error' ? 'bg-red-500 text-white' :
-                'bg-blue-500 text-white'
-            }`;
-
-            // Show notification
-            notification.classList.remove('translate-x-full');
-
-            // Hide after 3 seconds
-            setTimeout(() => {
-                notification.classList.add('translate-x-full');
-            }, 3000);
-        }
-
+        // Page navigation functions
         function showPage(pageId) {
-            // Hide all pages
             document.querySelectorAll('#app-content > div').forEach(div => {
                 div.classList.add('hidden');
             });
-
-            // Show selected page
             document.getElementById(pageId).classList.remove('hidden');
-
-            // Update navigation
-            updateNavigation(pageId);
-
-            // Load page-specific content
-            if (pageId === 'home-page') {
-                loadFeaturedProducts();
-            } else if (pageId === 'cart-page') {
-                updateCartDisplay();
-            } else if (pageId === 'checkout-page') {
-                updateCheckoutDisplay();
-            }
-        }
-
-        function updateNavigation(currentPage) {
-            // Reset all nav buttons
+            
+            // Update bottom navigation active state
             document.querySelectorAll('nav button').forEach(btn => {
                 btn.classList.remove('text-primary');
                 btn.classList.add('text-gray-600');
             });
-
-            // Set active nav item
-            const navMap = {
-                'home-page': 'nav-home',
-                'product-list-page': 'nav-categories',
-                'cart-page': 'nav-cart'
-            };
-
-            const activeNav = document.getElementById(navMap[currentPage]);
-            if (activeNav) {
-                activeNav.classList.remove('text-gray-600');
-                activeNav.classList.add('text-primary');
+            
+            // Set current page as active
+            const currentBtn = Array.from(document.querySelectorAll('nav button')).find(btn => 
+                btn.onclick.toString().includes(pageId)
+            );
+            if (currentBtn) {
+                currentBtn.classList.remove('text-gray-600');
+                currentBtn.classList.add('text-primary');
             }
         }
 
-        async function loadFeaturedProducts() {
-            try {
-                const products = await loadProducts();
-                const featuredContainer = document.getElementById('featured-products');
-
-                if (products.length === 0) {
-                    featuredContainer.innerHTML = '<div class="col-span-2 text-center text-gray-500">No products available</div>';
-                    return;
-                }
-
-                // Show first 4 products as featured
-                const featured = products.slice(0, 4);
-                featuredContainer.innerHTML = featured.map(product => createProductCard(product)).join('');
-            } catch (error) {
-                document.getElementById('featured-products').innerHTML = '<div class="col-span-2 text-center text-red-500">Failed to load products</div>';
-            }
-        }
-
-        function createProductCard(product) {
-            const inStock = product.stock > 0;
-            const stockText = inStock ? `${product.stock} in stock` : 'Out of stock';
-
-            return `
-                <div class="bg-white rounded-lg shadow-sm p-3 ${inStock ? 'cursor-pointer hover:shadow-md transition-shadow' : 'opacity-60'}"
-                     ${inStock ? `onclick="showProduct(${product.id})"` : ''}>
-                    <img src="${product.image || 'https://picsum.photos/150/150?random=' + product.id}"
-                         alt="${product.name}"
-                         class="w-full h-32 object-cover rounded mb-2">
-                    <h4 class="font-medium text-sm mb-1" title="${product.name}">${truncateText(product.name, 30)}</h4>
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-primary font-bold">$${product.price.toFixed(2)}</span>
-                        <span class="text-xs text-gray-500">${stockText}</span>
-                    </div>
-                    ${!inStock ? '<div class="text-xs text-red-500">Out of Stock</div>' : ''}
-                </div>
-            `;
-        }
-
-        async function showCategory(category) {
-            currentCategory = category;
+        function showCategory(category) {
             showPage('product-list-page');
-
-            // Update title
-            const categoryTitles = {
-                'kids': 'Kids Clothing',
-                'baby': 'Baby Essentials',
-                'women': "Women's Fashion",
-                'men': "Men's Fashion",
-                'accessories': 'Accessories',
-                'all': 'All Products'
-            };
-
-            document.getElementById('category-title').textContent = categoryTitles[category] || 'Products';
-
-            // Load and display products
-            try {
-                const products = await loadProducts(category);
-                displayProductGrid(products);
-            } catch (error) {
-                document.getElementById('product-grid').innerHTML = '<div class="col-span-2 text-center text-red-500">Failed to load products</div>';
-            }
-        }
-
-        function displayProductGrid(products) {
+            document.getElementById('category-title').textContent = categoryTitles[category];
+            
             const productGrid = document.getElementById('product-grid');
-
-            if (products.length === 0) {
-                productGrid.innerHTML = '<div class="col-span-2 text-center text-gray-500">No products found</div>';
-                return;
-            }
-
-            productGrid.innerHTML = products.map(product => createProductCard(product)).join('');
+            productGrid.innerHTML = '';
+            
+            products[category].forEach(product => {
+                productGrid.innerHTML += `
+                    <div class="bg-white rounded-lg shadow-sm p-3" onclick="showProduct(${product.id})">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-32 object-cover rounded mb-2">
+                        <h4 class="font-medium text-sm mb-1">${product.name}</h4>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-500 font-bold">$${product.price}</span>
+                            ${product.oldPrice ? `<span class="text-gray-400 text-xs line-through">$${product.oldPrice}</span>` : ''}
+                        </div>
+                        ${product.discount ? `<span class="absolute top-2 right-2 bg-red-100 text-red-600 text-xs px-1 rounded">${product.discount}</span>` : ''}
+                    </div>
+                `;
+            });
         }
 
-        async function showProduct(productId) {
-            try {
-                // Find product in current products array
-                const product = currentProducts.find(p => p.id === productId);
-                if (!product) {
-                    showNotification('Product not found', 'error');
-                    return;
-                }
-
-                currentProduct = product;
-                currentQuantity = 1;
-
-                // Update product details
-                document.getElementById('product-image').src = product.image || `https://picsum.photos/300/300?random=${product.id}`;
-                document.getElementById('product-title').textContent = product.name;
-                document.getElementById('product-price').textContent = `$${product.price.toFixed(2)}`;
-                document.getElementById('product-stock').textContent = `${product.stock} in stock`;
-                document.getElementById('product-description').textContent = product.description || 'No description available.';
-                document.getElementById('quantity-display').textContent = currentQuantity;
-
-                // Disable add to cart if out of stock
-                const addToCartBtn = document.querySelector('#product-detail-page button[onclick="addToCart()"]');
-                if (product.stock === 0) {
-                    addToCartBtn.disabled = true;
-                    addToCartBtn.textContent = 'Out of Stock';
-                    addToCartBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-                    addToCartBtn.classList.remove('bg-soft-blue', 'hover:bg-blue-400');
-                } else {
-                    addToCartBtn.disabled = false;
-                    addToCartBtn.innerHTML = '<i class="fas fa-cart-plus mr-2"></i>Add to Cart';
-                    addToCartBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                    addToCartBtn.classList.add('bg-soft-blue', 'hover:bg-blue-400');
-                }
-
-                showPage('product-detail-page');
-            } catch (error) {
-                showNotification('Failed to load product details', 'error');
-            }
-        }
-
-        function increaseQuantity() {
-            if (currentProduct && currentQuantity < currentProduct.stock) {
-                currentQuantity++;
-                document.getElementById('quantity-display').textContent = currentQuantity;
-            }
-        }
-
-        function decreaseQuantity() {
-            if (currentQuantity > 1) {
-                currentQuantity--;
-                document.getElementById('quantity-display').textContent = currentQuantity;
-            }
+        function showProduct(productId) {
+            showPage('product-detail-page');
+            // In a real app, you would fetch product details from an API
+            console.log('Showing product:', productId);
         }
 
         function addToCart() {
-            if (!currentProduct || currentProduct.stock === 0) {
-                showNotification('Product is out of stock', 'error');
-                return;
-            }
-
-            // Check if product already in cart
-            const existingItem = cart.find(item => item.id === currentProduct.id);
-
-            if (existingItem) {
-                // Update quantity if not exceeding stock
-                if (existingItem.quantity + currentQuantity <= currentProduct.stock) {
-                    existingItem.quantity += currentQuantity;
-                    showNotification(`Updated quantity in cart`, 'success');
-                } else {
-                    showNotification(`Only ${currentProduct.stock} items available`, 'error');
-                    return;
-                }
-            } else {
-                // Add new item to cart
-                cart.push({
-                    id: currentProduct.id,
-                    name: currentProduct.name,
-                    price: currentProduct.price,
-                    image: currentProduct.image,
-                    quantity: currentQuantity,
-                    stock: currentProduct.stock
-                });
-                showNotification(`${currentProduct.name} added to cart`, 'success');
-            }
-
-            // Save cart to localStorage
-            localStorage.setItem('littleTreasuresCart', JSON.stringify(cart));
-            updateCartCount();
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('littleTreasuresCart', JSON.stringify(cart));
-            updateCartCount();
-            updateCartDisplay();
-            showNotification('Item removed from cart', 'success');
-        }
-
-        function updateCartQuantity(productId, newQuantity) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                if (newQuantity <= 0) {
-                    removeFromCart(productId);
-                } else if (newQuantity <= item.stock) {
-                    item.quantity = newQuantity;
-                    localStorage.setItem('littleTreasuresCart', JSON.stringify(cart));
-                    updateCartCount();
-                    updateCartDisplay();
-                } else {
-                    showNotification(`Only ${item.stock} items available`, 'error');
-                }
-            }
-        }
-
-        function clearCart() {
-            if (cart.length === 0) return;
-
-            if (confirm('Are you sure you want to clear your cart?')) {
-                cart = [];
-                localStorage.setItem('littleTreasuresCart', JSON.stringify(cart));
-                updateCartCount();
-                updateCartDisplay();
-                showNotification('Cart cleared', 'success');
-            }
-        }
-
-        function updateCartCount() {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').textContent = totalItems;
-        }
-
-        function updateCartDisplay() {
-            const cartEmpty = document.getElementById('cart-empty');
-            const cartContent = document.getElementById('cart-content');
-            const cartItems = document.getElementById('cart-items');
-
-            if (cart.length === 0) {
-                cartEmpty.classList.remove('hidden');
-                cartContent.classList.add('hidden');
-                return;
-            }
-
-            cartEmpty.classList.add('hidden');
-            cartContent.classList.remove('hidden');
-
-            // Generate cart items HTML
-            cartItems.innerHTML = cart.map(item => `
-                <div class="flex items-center bg-white rounded-lg p-3 shadow-sm">
-                    <img src="${item.image || 'https://picsum.photos/80/80?random=' + item.id}"
-                         alt="${item.name}"
-                         class="w-16 h-16 rounded">
-                    <div class="ml-3 flex-1">
-                        <h3 class="font-medium text-sm">${truncateText(item.name, 40)}</h3>
-                        <p class="text-gray-600 text-xs">In stock: ${item.stock}</p>
-                        <div class="flex justify-between items-center mt-1">
-                            <span class="text-primary font-bold">${item.price.toFixed(2)}</span>
-                            <div class="flex items-center border rounded">
-                                <button class="px-2 py-1 text-gray-600 hover:bg-gray-100"
-                                        onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})">-</button>
-                                <span class="px-2 py-1 min-w-[40px] text-center">${item.quantity}</span>
-                                <button class="px-2 py-1 text-gray-600 hover:bg-gray-100"
-                                        onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="text-gray-400 hover:text-red-500 ml-2"
-                            onclick="removeFromCart(${item.id})">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `).join('');
-
-            // Update totals
-            updateCartTotals();
-        }
-
-        function updateCartTotals() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-            const total = subtotal + shipping;
-
-            document.getElementById('cart-subtotal').textContent = `${subtotal.toFixed(2)}`;
-            document.getElementById('cart-shipping').textContent = shipping === 0 ? 'FREE' : `${shipping.toFixed(2)}`;
-            document.getElementById('cart-total').textContent = `${total.toFixed(2)}`;
-        }
-
-        function showCheckout() {
-            if (cart.length === 0) {
-                showNotification('Your cart is empty', 'error');
-                return;
-            }
-            showPage('checkout-page');
-        }
-
-        function updateCheckoutDisplay() {
-            const checkoutItems = document.getElementById('checkout-items');
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-            const total = subtotal + shipping;
-
-            // Display items
-            checkoutItems.innerHTML = cart.map(item => `
-                <div class="flex justify-between">
-                    <span>${truncateText(item.name, 25)} x${item.quantity}</span>
-                    <span>${(item.price * item.quantity).toFixed(2)}</span>
-                </div>
-            `).join('');
-
-            // Update totals
-            document.getElementById('checkout-subtotal').textContent = `${subtotal.toFixed(2)}`;
-            document.getElementById('checkout-shipping').textContent = shipping === 0 ? 'FREE' : `${shipping.toFixed(2)}`;
-            document.getElementById('checkout-total').textContent = `${total.toFixed(2)}`;
-        }
-
-        async function handleCheckoutSubmit(event) {
-            event.preventDefault();
-
-            if (cart.length === 0) {
-                showNotification('Your cart is empty', 'error');
-                return;
-            }
-
-            // Get form data
-            const customerName = document.getElementById('customer-name').value.trim();
-            const customerPhone = document.getElementById('customer-phone').value.trim();
-            const customerAddress = document.getElementById('customer-address').value.trim();
-
-            // Validate form data
-            if (!customerName || !customerPhone || !customerAddress) {
-                showNotification('Please fill in all required fields', 'error');
-                return;
-            }
-
-            if (customerName.length < 2) {
-                showNotification('Name must be at least 2 characters', 'error');
-                return;
-            }
-
-            if (customerAddress.length < 10) {
-                showNotification('Please provide a complete address', 'error');
-                return;
-            }
-
-            // Calculate totals
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-
-            // Prepare order data for API
-            const orderData = {
-                user_name: customerName,
-                phone: customerPhone,
-                address: customerAddress,
-                shipping: shipping,
-                items: cart.map(item => ({
-                    product_id: item.id,
-                    quantity: item.quantity,
-                    price: item.price
-                }))
-            };
-
-            try {
-                // Submit order to API
-                const result = await createOrder(orderData);
-
-                if (result.success) {
-                    // Clear cart
-                    cart = [];
-                    localStorage.setItem('littleTreasuresCart', JSON.stringify(cart));
-                    updateCartCount();
-
-                    // Show success page
-                    document.getElementById('success-order-number').textContent = result.data.order_number;
-                    showPage('order-success-page');
-
-                    // Clear form
-                    document.getElementById('checkout-form').reset();
-
-                    showNotification('Order placed successfully!', 'success');
-                } else {
-                    throw new Error(result.message || 'Failed to place order');
-                }
-            } catch (error) {
-                console.error('Checkout failed:', error);
-                showNotification('Failed to place order. Please try again.', 'error');
+            alert('Product added to cart!');
+            // Update cart count
+            const cartCount = document.querySelector('.relative .bg-accent');
+            if (cartCount) {
+                const currentCount = parseInt(cartCount.textContent);
+                cartCount.textContent = currentCount + 1;
             }
         }
 
         function orderViaTelegram() {
-            if (!currentProduct) {
-                showNotification('No product selected', 'error');
-                return;
-            }
-
-            const message = `🛍️ Order Request
-Product: ${currentProduct.name}
-Price: ${currentProduct.price.toFixed(2)}
-Quantity: ${currentQuantity}
-Total: ${(currentProduct.price * currentQuantity).toFixed(2)}
-
-Please contact us to complete your order!`;
-
-            // In a real implementation, this would integrate with Telegram Bot API
-            // For now, we'll show an alert with the order details
-            alert(`This would send the following order to our Telegram admin:\n\n${message}`);
-            showNotification('Order request would be sent via Telegram', 'info');
+            // This would integrate with Telegram Bot API in a real implementation
+            alert('Order will be sent via Telegram. In a real app, this would integrate with Telegram Bot API.');
+            
+            // Example of what would be sent to Telegram API:
+            const orderData = {
+                product: document.getElementById('product-title').textContent,
+                price: document.getElementById('product-price').textContent,
+                quantity: 1
+            };
+            
+            console.log('Telegram order data:', orderData);
         }
 
-        // Search functionality
-        function toggleSearch() {
-            const searchBar = document.getElementById('search-bar');
-            const searchInput = document.getElementById('search-input');
+        function showCheckout() {
+            showPage('checkout-page');
+        }
 
-            if (searchBar.classList.contains('hidden')) {
-                searchBar.classList.remove('hidden');
-                searchInput.focus();
-            } else {
-                searchBar.classList.add('hidden');
-                searchInput.value = '';
+        function placeOrder() {
+            alert('Order placed successfully!');
+            showPage('home-page');
+            
+            // Reset cart count
+            const cartCount = document.querySelector('.relative .bg-accent');
+            if (cartCount) {
+                cartCount.textContent = '0';
             }
         }
 
-        function handleSearchKeyPress(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
+        function logout() {
+            alert('Logged out successfully');
+            showPage('home-page');
         }
-
-        async function performSearch() {
-            const query = document.getElementById('search-input').value.trim();
-            if (!query) {
-                showNotification('Please enter a search term', 'error');
-                return;
-            }
-
-            try {
-                // Load all products and filter locally
-                const allProducts = await loadProducts();
-                const searchResults = allProducts.filter(product =>
-                    product.name.toLowerCase().includes(query.toLowerCase()) ||
-                    (product.description && product.description.toLowerCase().includes(query.toLowerCase())) ||
-                    product.category.toLowerCase().includes(query.toLowerCase())
-                );
-
-                // Show results in product list page
-                currentProducts = searchResults;
-                document.getElementById('category-title').textContent = `Search: "${query}"`;
-                displayProductGrid(searchResults);
-                showPage('product-list-page');
-
-                // Hide search bar
-                document.getElementById('search-bar').classList.add('hidden');
-                document.getElementById('search-input').value = '';
-
-                if (searchResults.length === 0) {
-                    showNotification('No products found', 'info');
-                }
-            } catch (error) {
-                showNotification('Search failed. Please try again.', 'error');
-            }
-        }
-
-        function handleSortChange() {
-            const sortValue = document.getElementById('sort-select').value;
-            let sortedProducts = [...currentProducts];
-
-            switch (sortValue) {
-                case 'price_asc':
-                    sortedProducts.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price_desc':
-                    sortedProducts.sort((a, b) => b.price - a.price);
-                    break;
-                case 'name':
-                    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-                case 'newest':
-                    sortedProducts.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
-                    break;
-                default:
-                    break;
-            }
-
-            displayProductGrid(sortedProducts);
-        }
-
-        function goBackFromProduct() {
-            if (currentCategory === 'all' || currentCategory) {
-                showCategory(currentCategory);
-            } else {
-                showPage('home-page');
-            }
-        }
-
-        function toggleFavorite() {
-            const icon = document.getElementById('favorite-icon');
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far', 'text-gray-400');
-                icon.classList.add('fas', 'text-red-500');
-                showNotification('Added to favorites', 'success');
-            } else {
-                icon.classList.remove('fas', 'text-red-500');
-                icon.classList.add('far', 'text-gray-400');
-                showNotification('Removed from favorites', 'info');
-            }
-        }
-
-        function showInfo() {
-            alert(`Little Treasures E-commerce App
-
-Version: 1.0.0
-API Connected: ${API_BASE_URL}
-
-Features:
-• Browse products by category
-• Add items to cart
-• Secure checkout process
-• Real-time inventory updates
-• Telegram admin notifications
-
-For support, contact our admin team.`);
-        }
-
-        // Utility functions
-        function truncateText(text, maxLength) {
-            if (!text) return '';
-            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-        }
-
-        // Event listeners
-        document.getElementById('checkout-form').addEventListener('submit', handleCheckoutSubmit);
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Little Treasures App initialized');
-            console.log('API Base URL:', API_BASE_URL);
-
-            // Load initial data
-            updateCartCount();
             showPage('home-page');
-
-            // Test API connection
-            apiCall('/').then(response => {
-                console.log('API connected successfully:', response);
-                showNotification('Connected to API', 'success');
-            }).catch(error => {
-                console.error('API connection failed:', error);
-                showNotification('API connection failed - using demo mode', 'error');
-            });
         });
-
-        // Handle browser back button
-        window.addEventListener('popstate', function(event) {
-            if (event.state) {
-                showPage(event.state.page);
-            }
-        });
-
-        // Add to browser history when navigating
-        function showPageWithHistory(pageId) {
-            showPage(pageId);
-            history.pushState({page: pageId}, '', `#${pageId}`);
-        }
     </script>
 </body>
 </html>
